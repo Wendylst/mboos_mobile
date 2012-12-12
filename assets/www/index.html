@@ -4,18 +4,19 @@
     <title>HOME</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
     
-    <script src="cordova-1.9.0.js"></script>
+    <script src="js/cordova-1.9.0.js"></script>
     <link rel="stylesheet" href="css/style.css" /> 	
 	<link rel="stylesheet" href="css/jquery.mobile-1.2.0.css" />
 	<script src="js/jquery.js"></script>
 	<script type="text/javascript">
 			
-			
+			var serviceURL = "http://192.168.1.102/MBOOS/mobile_ajax/mobile/";
+	
 			$(document).live("pageinit", function(event){
-				//$('#homePage').append('active');
+				
 				categoryPage();
 				searchPage();
-				//get_info();
+				
 				
 			});
 			
@@ -26,9 +27,6 @@
 			});
 			
 			
-/* 			$('#detailsPage').on('pageshow', function(event) {
-				alert('working');   	
-			}); */
 			
 			
    			function getUrlVars() {
@@ -45,22 +43,24 @@
 			
   			function get_info() {
 				
-				//var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+				
 				var id = getUrlVars()["id"];
 				
-				$('p.item_name').empty().append(id);
+				//$('p.item_name').empty().append(id);
+		    	$.getJSON(serviceURL + 'get_info?id='+id, function(data) {
+		    		
+		    		item_info = data.item_info;
+		    		$.each(item_info, function(index, info) {
+		    			
+		    			$('label.item_name').append(info.mboos_product_name);
+		    		});
+		    	
+		    	});
 				
-/* 				$.get("http://192.168.0.104/MBOOS/mobile_ajax/mobile/get_info?id="+id,
-						   function(data){
-							$('p.item_name').empty().append(data.mboos_product_name);							
-						   }, "json"); */
 			}    
 			
 		    function categoryPage() {
-		    	//$('#categoryList').append('categories');
 		    	
-		    	
-		    	var serviceURL = "http://192.168.0.104/MBOOS/mobile_ajax/mobile/";
 		    	
 		    	$.getJSON(serviceURL + 'get_categories', function(data) {
 		    		$('#categoryList li').remove();
@@ -75,31 +75,24 @@
 		    }
 		    
 		    function searchPage() {
-		    	//$('#search_data').append('search');
 		    	
-		    	var serviceURL = "http://192.168.0.104/MBOOS/mobile_ajax/mobile/";
-		    	
+	    	
 		    	$.getJSON(serviceURL + 'search', function(data) {
 		    		$('#search_data li').remove();
 		    		products = data.products;
 		    		$.each(products, function(index, product) {
 		    			$('#search_data').append('<li><a class="id_item" href="buy_item.html?id=' + product.mboos_product_id + '">' +
 		    					'<h4>' + product.mboos_product_name +'</h4>' +
-		    					"</a></li>");
+		    					"</a><a class='id_link' href='buy_item.html?id=" + product.mboos_product_name + "' data-rel='dialog' data-transition='slideup'>Add to Cart</a></li>");
 		    					    			
 		    		});
 		    	$('#search_data').listview('refresh');
 		    	});
 		    	
 		    	$('a.id_item').live('click', function(event) {
-					//var obj = $(this);
-/* 					//alert(obj.attr('class'));
-					$('a.id_item').each(function(){
-						$(this).removeClass('selected');
-					});
 					
-					obj.addClass('selected'); */
-					// link = $('a.id_item').attr('href');
+		    	});
+		    	$('a.id_link').live('click', function(event) {
 					
 		    	});
 		    	
