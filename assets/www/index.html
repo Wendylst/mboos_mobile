@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>HOME</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+    
+    <script src="cordova-1.9.0.js"></script>
+    <link rel="stylesheet" href="css/style.css" /> 	
+	<link rel="stylesheet" href="css/jquery.mobile-1.2.0.css" />
+	<script src="js/jquery.js"></script>
+	<script type="text/javascript">
+			
+			
+			$(document).live("pageinit", function(event){
+				//$('#homePage').append('active');
+				categoryPage();
+				searchPage();
+				//get_info();
+				
+			});
+			
+			$('#detailsPage').live("pageshow", function(event){
+
+				get_info();
+				
+			});
+			
+			
+/* 			$('#detailsPage').on('pageshow', function(event) {
+				alert('working');   	
+			}); */
+			
+			
+   			function getUrlVars() {
+			    var vars = [], hash;
+			    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+			    for(var i = 0; i < hashes.length; i++)
+			    {
+			        hash = hashes[i].split('=');
+			        vars.push(hash[0]);
+			        vars[hash[0]] = hash[1];
+			    }
+			    return vars;
+			}  
+			
+  			function get_info() {
+				
+				//var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+				var id = getUrlVars()["id"];
+				
+				$('p.item_name').empty().append(id);
+				
+/* 				$.get("http://192.168.0.104/MBOOS/mobile_ajax/mobile/get_info?id="+id,
+						   function(data){
+							$('p.item_name').empty().append(data.mboos_product_name);							
+						   }, "json"); */
+			}    
+			
+		    function categoryPage() {
+		    	//$('#categoryList').append('categories');
+		    	
+		    	
+		    	var serviceURL = "http://192.168.0.104/MBOOS/mobile_ajax/mobile/";
+		    	
+		    	$.getJSON(serviceURL + 'get_categories', function(data) {
+		    		$('#categoryList li').remove();
+		    		categories = data.categories;
+		    		$.each(categories, function(index, category) {
+		    			$('#categoryList').append('<li><a href="acura.html?id=' + category.mboos_product_category_id + '">' +
+		    					'<h4>' + category.mboos_product_category_name +'</h4>' +
+		    					'</a></li>');
+		    		});
+		    	$('#categoryList').listview('refresh');
+		    	});
+		    }
+		    
+		    function searchPage() {
+		    	//$('#search_data').append('search');
+		    	
+		    	var serviceURL = "http://192.168.0.104/MBOOS/mobile_ajax/mobile/";
+		    	
+		    	$.getJSON(serviceURL + 'search', function(data) {
+		    		$('#search_data li').remove();
+		    		products = data.products;
+		    		$.each(products, function(index, product) {
+		    			$('#search_data').append('<li><a class="id_item" href="buy_item.html?id=' + product.mboos_product_id + '">' +
+		    					'<h4>' + product.mboos_product_name +'</h4>' +
+		    					"</a></li>");
+		    					    			
+		    		});
+		    	$('#search_data').listview('refresh');
+		    	});
+		    	
+		    	$('a.id_item').live('click', function(event) {
+					//var obj = $(this);
+/* 					//alert(obj.attr('class'));
+					$('a.id_item').each(function(){
+						$(this).removeClass('selected');
+					});
+					
+					obj.addClass('selected'); */
+					// link = $('a.id_item').attr('href');
+					
+		    	});
+		    	
+		    }
+          
+	</script>
+   	<script src="js/jquery.mobile-1.2.0.js"></script>
+</head>
+<body>
+<div id="homePage" data-role="page">
+
+	<div data-role="header">
+		<h1>HOME</h1>
+	</div><!-- /header -->
+
+	<div data-role="content">	
+			<div data-role="controlgroup" data-type="horizontal" class="center-wrapper">					
+					<a href="search.html" data-role="button" data-theme="" data-icon="search">Search</a>
+					<a href="categories.html" data-role="button" data-icon="grid">Category</a>
+			</div>
+	</div>
+	
+	<div data-role="footer" data-id="foo1" data-position="fixed">
+			<div data-role="navbar">
+				<ul>
+					<li><a href="index.html" data-prefetch="true" data-transition="slideup" class="ui-btn-active ui-state-persist">HOME</a></li>
+					<li><a href="cart.html" data-prefetch="true">CART</a></li>
+					<li><a href="checkout.html" data-prefetch="true">CHECKOUT</a></li>
+				</ul>
+			</div><!-- /navbar -->
+	</div><!-- /footer -->	
+</div><!-- /page -->
+</body>
+</html>

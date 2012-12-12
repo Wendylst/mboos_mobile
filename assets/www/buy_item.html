@@ -1,0 +1,31 @@
+<!DOCTYPE html> 
+<html> 
+	<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">  
+    <script src="cordova-1.9.0.js"></script>
+    <link rel="stylesheet" href="css/style.css" /> 	
+	<link rel="stylesheet" href="css/jquery.mobile-1.2.0.css" />
+	<script src="js/jquery.js"></script>
+   	<script src="js/jquery.mobile-1.2.0.js"></script>
+   	<script src="js/getDetails.js"></script>
+   	
+</head> 
+<body>
+<div id="detailsPage" data-role="page">
+
+		<div data-role="header" data-theme="e">
+			<h1>Add to Cart?</h1>
+		</div><!-- /header -->
+
+		<div id="dialog_info" data-role="content">
+			
+			<h4><label>Name: </label><p class="item_name"></p></h4>
+			<p class="item_price"><label>Price: </label></p>
+			<p class="msg">This item will add to Cart</p>
+			<a href="index.html" data-role="button" data-rel="back" data-theme="b">ADD</a>
+			<a href="search.html" data-role="button" data-rel="back">CANCEL</a>
+		</div><!-- /content -->
+	</div><!-- /page -->
+</body>
+</html>

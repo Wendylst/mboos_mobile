@@ -1,0 +1,4 @@
+/*MAIN CSS*/
+
+.center-wrapper{  margin:auto;  text-align: center; width:100%; } 
+#categoriesPage form.ui-listview-filter { display:none; } 
