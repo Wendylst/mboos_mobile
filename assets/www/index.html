@@ -83,7 +83,7 @@
 		    		$.each(products, function(index, product) {
 		    			$('#search_data').append('<li><a class="id_item" href="buy_item.html?id=' + product.mboos_product_id + '">' +
 		    					'<h4>' + product.mboos_product_name +'</h4>' +
-		    					"</a><a class='id_link' href='buy_item.html?id=" + product.mboos_product_name + "' data-transition='slideup'>Add to Cart</a></li>");
+		    					"</a><a class='id_link' href='buy_item.html?id=" + product.mboos_product_id + "' data-transition='slideup'>Add to Cart</a></li>");
 		    					    			
 		    		});
 		    	$('#search_data').listview('refresh');
