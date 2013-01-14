@@ -1,4 +1,12 @@
 /*MAIN CSS*/
 
 .center-wrapper{  margin:auto;  text-align: center; width:100%; } 
-#categoriesPage form.ui-listview-filter { display:none; } 
+#categoriesPage form.ui-listview-filter { display:none; }
+.item_image { float:left; padding: 0 15px 0 0; }
+.item_more_info { clear:both; }
+#qtyForm_label { float:left;  margin-top:0.3em;  }
+#basic { width:100px;  margin: 0 0 0 5em; }
+.addCartBtn, .cancelBtn { clear:both; }
+.item_desc { margin-top:5px; }
+
+

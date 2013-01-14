@@ -10,25 +10,47 @@
 	<script src="js/jquery.js"></script>
 	<script type="text/javascript">
 			
-			var serviceURL = "http://192.168.1.102/MBOOS/mobile_ajax/mobile/";
+			var serviceURL = "http://192.168.1.101/MBOOS/mobile_ajax/mobile/";
+			
+			var myCart = []; 
 	
 			$(document).live("pageinit", function(event){
 				
 				categoryPage();
 				searchPage();
-				
-				
+	
 			});
 			
 			$('#detailsPage').live("pageshow", function(event){
 
 				get_info();
 				
+			    /*Add to Cart Script*/
+			    
+			    $('.addCartBtn').click(function() {
+			    	
+			    	//alert('DONE');
+		    	
+			    	//'id'=>'1','name'=>'ian'+'id'=>'2','name'=>'paul'
+			    	var item = [$('input.item_id').val() + ","+ $('input.item_name_val').val() + ","+ $('input.item_price_val').val() + ","+ $('input.qtyForm').val() + ""];
+			    	
+			    	var strItem = item.toString();
+			    	var items = strItem.split(",");
+			    	
+			    	//alert(items[0] + items[1] + items[2] + items[3]);
+			    
+			    	//onDeviceReady();
+			    	//addItem(items[0], items[1], items[2], items[3]);
+			    	addItem();
+			    
+			  	
+   	    	
+			    });
+			   
+				
 			});
 			
-			
-			
-			
+	
    			function getUrlVars() {
 			    var vars = [], hash;
 			    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
@@ -53,7 +75,17 @@
 		    		$.each(item_info, function(index, info) {
 		    			
 		    			$('label.item_name').append(info.mboos_product_name);
+		    			$('label.item_price').append("PHP"+info.mboos_product_price);
+		    			$('p.item_image').append('<img src="http://192.168.1.101/MBOOS/images/item_images/' + info.mboos_product_image + '" height="100" width="100">');
+		    			$('li.item_availability').append(info.mboos_product_availability);
+		    			$('p.item_desc').append(info.mboos_product_desc);
+		    			$('input.item_id').val(info.mboos_product_id);
+		    			$('input.item_name_val').val(info.mboos_product_name);
+		    			$('input.item_price_val').val(info.mboos_product_price);
+		    			
+		    			
 		    		});
+		    		
 		    	
 		    	});
 				
@@ -89,6 +121,8 @@
 		    	$('#search_data').listview('refresh');
 		    	});
 		    	
+		    	
+		    	
 		    	$('a.id_item').live('click', function(event) {
 					
 		    	});
@@ -97,9 +131,88 @@
 		    	});
 		    	
 		    }
+		    
+		    /*testing script*/
+		    
+$('#cartPage').live("pageshow", function(event){
+
+	onDeviceReady();
+			});
+		    
+		function populateDB(tx) {
+			
+	        tx.executeSql('CREATE TABLE IF NOT EXISTS DEMO (id INTEGER PRIMARY KEY, data)');
+
+
+		}
+		
+		// Query the database
+		//
+		function queryDB(tx) {
+		    tx.executeSql('SELECT * FROM DEMO', [], querySuccess, errorCB);
+		}
+		
+		// Query the success callback
+		//
+		function querySuccess(tx, results) {
+		    
+		  //  $('#cart_data').append('<li>'+ results.rows.item(i).title + '</li>');
+			var len = results.rows.length;
+			$('#cart_data').append("DEMO table: " + len + " rows found.");
+	        for (var i=0; i<len; i++){
+	        	//$('#cart_data').append("Row = " + i + " ID = " + results.rows.item(i).id + " Data =  " + results.rows.item(i).data);
+	        	//$('#cart_data').append("<li>" + results.rows.item(i).data + "<li>");
+	        	$('#cart_data').append('<li><a class="cart_edit_item" href="cart_edit_item.html?id=' + results.rows.item(i).id + '">' +
+		    					'<h4>' + results.rows.item(i).data  +'</h4>' + '</a>'); 
+	        	$("#cart_data").listview("refresh");
+	        }
+
+		    
+		}
+		
+		// Transaction error callback
+		//
+		function errorCB(err) {
+		    console.log("Error processing SQL: "+err.code);
+		}
+		
+		// Transaction success callback
+		//
+		function successCB() {
+		    var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
+		    db.transaction(queryDB, errorCB);
+		}
+		
+		// PhoneGap is ready
+		//
+		function onDeviceReady() {
+		    var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
+		    db.transaction(populateDB, errorCB, successCB);
+		}
+		
+		function addItem() {
+			//id, name, price, qty
+		    var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
+		    db.transaction(populateDB, errorCB, add);
+		}
+		
+		function add(tx) {
+		
+		        
+		        tx.executeSql('INSERT INTO DEMO (data) VALUES ("First row")');
+		        tx.executeSql('INSERT INTO DEMO (data) VALUES ("Second row")');
+
+			
+		}
+		
+		function dbErrorHandler(err){
+		    alert("DB Error: "+err.message + "\nCode="+err.code);
+		}
+
           
 	</script>
    	<script src="js/jquery.mobile-1.2.0.js"></script>
+
 </head>
 <body>
 <div id="homePage" data-role="page">
@@ -110,8 +223,8 @@
 
 	<div data-role="content">	
 			<div data-role="controlgroup" data-type="horizontal" class="center-wrapper">					
-					<a href="search.html" data-role="button" data-theme="" data-icon="search">Search</a>
-					<a href="categories.html" data-role="button" data-icon="grid">Category</a>
+					<a href="search.html" data-role="button" data-transition="fade" data-theme="" data-icon="search">Search</a>
+					<a href="categories.html" data-role="button" data-transition="fade" data-icon="grid">Category</a>
 			</div>
 	</div>
 	
