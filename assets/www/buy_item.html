@@ -7,24 +7,39 @@
     <link rel="stylesheet" href="css/style.css" /> 	
 	<link rel="stylesheet" href="css/jquery.mobile-1.2.0.css" />
 	<script src="js/jquery.js"></script>
+	<script src="js/utility.js"></script>
    	<script src="js/jquery.mobile-1.2.0.js"></script>
-   	<script src="js/getDetails.js"></script>
+
    	
 </head> 
 <body>
 <div id="detailsPage" data-role="page">
 
-		<div data-role="header" data-theme="e">
+		<div data-role="header">
 			<h1>Add to Cart?</h1>
 		</div><!-- /header -->
 
 		<div id="dialog_info" data-role="content">
-			
-			<h4><p><label class="item_name">Name: </label></p></h4>
-			<p class="item_price"><label>Price: </label></p>
-			<p class="msg">This item will add to Cart</p>
-			<a href="index.html" data-role="button" data-rel="back" data-theme="b">ADD</a>
-			<a href="search.html" data-role="button" data-rel="back">CANCEL</a>
+			<p class="item_image"></p>
+			<p><label class="item_name">Name: </label></p>
+			<p><label class="item_price" >Price:</label></p>
+			<div class="item_more_info">
+				<ul data-role="listview" data-inset="true">
+					<li class="item_availability">Availability : </li>
+					<li>Description
+						<p class="item_desc"></p>
+					</li>
+				</ul>
+				
+				<label id="qtyForm_label" for="basic">Quantity:</label>
+    			<input class="qtyForm" type="text" name="qtyForm" id="basic" value="" size="15" />
+    			
+				<a class="addCartBtn" data-role="button" data-rel="back" data-theme="a">ADD TO CART</a>
+				<a class="cancelBtn" data-role="button" data-rel="back">CANCEL</a>
+			</div>
+			<input type="hidden" class="item_id" />
+			<input type="hidden" class="item_name_val" />
+			<input type="hidden" class="item_price_val" />
 		</div><!-- /content -->
 	</div><!-- /page -->
 </body>
