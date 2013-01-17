@@ -6,8 +6,11 @@ $(document).live("pageinit", function(event){
 	
 	categoryPage();
 	searchPage();
+	
 
 });
+
+
 
 $('#detailsPage').live("pageshow", function(event){
 
@@ -28,8 +31,8 @@ $('#detailsPage').live("pageshow", function(event){
     	//alert(items[0] + items[1] + items[2] + items[3]);
     
     	//onDeviceReady();
-    	//addItem(items[0], items[1], items[2], items[3]);
-    	addItem("Math");
+    	addItem(items[0], items[1], items[2], items[3]);
+    	//addItem("Math");
     
   	
 	
@@ -129,7 +132,8 @@ $('a.id_link').live('click', function(event) {
 
 $('#cartPage').live("pageshow", function(event){
 
-	onDeviceReady();
+	setuopDB();
+	checkConnection();
 	
 });
 
@@ -144,7 +148,7 @@ function emptyDB() {
 	var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
 	db.transaction(function(tx) {
 	
-		tx.executeSql('DROP TABLE DEMO');
+		tx.executeSql('DROP TABLE CART');
 	
 	}, dbErrorHandler);
 }
@@ -152,7 +156,7 @@ function emptyDB() {
 	    
 function populateDB(tx) {
 		
-        tx.executeSql('CREATE TABLE IF NOT EXISTS DEMO (id INTEGER PRIMARY KEY, data)');
+        tx.executeSql('CREATE TABLE IF NOT EXISTS CART (id INTEGER PRIMARY KEY, item_id, item_name, item_price, item_qty)');
 
 
 }
@@ -161,7 +165,7 @@ function populateDB(tx) {
 
 function queryDB(tx) {
 	
-    tx.executeSql('SELECT * FROM DEMO', [], querySuccess, errorCB);
+    tx.executeSql('SELECT * FROM CART', [], querySuccess, errorCB);
     
 }
 
@@ -170,14 +174,14 @@ function querySuccess(tx, results) {
     
 	 //  $('#cart_data').append('<li>'+ results.rows.item(i).title + '</li>');
 	var len = results.rows.length;
-	$('#cart_data').append("DEMO table: " + len + " rows found.");
+	//$('#cart_data').append("CART table: " + len + " rows found.");
 	
 	for (var i=0; i<len; i++){
 		
 			//$('#cart_data').append("Row = " + i + " ID = " + results.rows.item(i).id + " Data =  " + results.rows.item(i).data);
 			//$('#cart_data').append("<li>" + results.rows.item(i).data + "<li>");
-			$('#cart_data').append('<li><a class="cart_edit_item" href="cart_edit_item.html?id=' + results.rows.item(i).id + '">' +
-							'<h4>' + results.rows.item(i).data  +'</h4>' + '</a>'); 
+			$('#cart_data').append('<li><a class="cart_edit_item" href="cart_edit_item.html?id=' + results.rows.item(i).item_id + '">' +
+							'<h4>' + results.rows.item(i).item_name  +'</h4>' + '</a>'); 
 			$("#cart_data").listview("refresh");
 			
 	    }
@@ -203,7 +207,7 @@ function successCB() {
 }
 
 // PhoneGap is ready
-function onDeviceReady() {
+function setuopDB() {
 	
     var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
     db.transaction(populateDB, errorCB, successCB);
@@ -211,12 +215,12 @@ function onDeviceReady() {
 }
 
 
-function addItem(note) {
+function addItem(id, name, price, qty) {
 	
 	var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
 	db.transaction(function(tx) {
 	
-		tx.executeSql('INSERT INTO DEMO (data) VALUES ("' + note + '")');
+		tx.executeSql('INSERT INTO CART (item_id, item_name, item_price, item_qty) VALUES ("' + id + '","' + name +'","' + price +'","' + qty +'")');
 	
 	}, dbErrorHandler);
 }
@@ -224,3 +228,25 @@ function addItem(note) {
 function dbErrorHandler(err){
     alert("DB Error: "+err.message + "\nCode="+err.code);
 }
+
+/*Checking if there's Internet Connection Script */
+
+function checkConnection() {
+    var networkState = navigator.network.connection.type;
+
+    var states = {};
+    states[Connection.UNKNOWN]  = 'Unknown connection';
+    states[Connection.ETHERNET] = 'Ethernet connection';
+    states[Connection.WIFI]     = 'WiFi connection';
+    states[Connection.CELL_2G]  = 'Cell 2G connection';
+    states[Connection.CELL_3G]  = 'Cell 3G connection';
+    states[Connection.CELL_4G]  = 'Cell 4G connection';
+    states[Connection.NONE]     = 'No network connection';
+
+    //alert('Connection type: ' + networkState);
+    if(networkState == "none") {
+    	$("#center_box").empty().append('');
+    } 
+}
+
+
