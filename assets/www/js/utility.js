@@ -243,10 +243,8 @@ function checkConnection() {
     states[Connection.CELL_4G]  = 'Cell 4G connection';
     states[Connection.NONE]     = 'No network connection';
 
-    //alert('Connection type: ' + networkState);
-    if(networkState == "none") {
-    	$("#center_box").empty().append('');
-    } 
+    alert('Connection type: ' + networkState);
+
 }
 
 
