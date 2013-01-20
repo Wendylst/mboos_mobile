@@ -32,11 +32,23 @@
 				</ul>
 				
 				<label id="qtyForm_label" for="basic">Quantity:</label>
-    			<input class="qtyForm" type="text" name="qtyForm" id="basic" value="" size="15" />
-    			
-				<a class="addCartBtn" data-role="button" data-rel="back" data-theme="a">ADD TO CART</a>
+    			<input id="basic" class="qtyForm" type="number" name="qtyForm" pattern="[0-9]*" id="number-pattern" value="1" data-clear-btn="true" placeholder="Pattern attribute [0-9]* for a numeric keypad" size="15" />
+    			<a class="addCartBtn" href="#popupDialog" data-rel="popup" data-position-to="window" data-role="button"  data-transition="pop" data-theme="b">Add to Cart</a>
 				<a class="cancelBtn" data-role="button" data-rel="back">CANCEL</a>
 			</div>
+			
+
+		<div data-role="popup" id="popupDialog" data-overlay-theme="a" data-theme="c" style="max-width:400px;" class="ui-corner-all">
+			<div data-role="header" data-theme="a" class="ui-corner-top">
+				<h1>Menu</h1>
+			</div>
+			<div data-role="content" data-theme="d" class="ui-corner-bottom ui-content">
+				<p>Item was added to Cart</p>
+				<a href="cart.html" data-role="button">Go To Cart</a>    
+				<a href="search.html" data-role="button" data-theme="b">Continue Shopping</a>  
+			</div>
+		</div>
+
 			<input type="hidden" class="item_id" />
 			<input type="hidden" class="item_name_val" />
 			<input type="hidden" class="item_price_val" />

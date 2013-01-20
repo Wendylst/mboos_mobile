@@ -13,18 +13,17 @@
 </head>
 <body>
 <div id="searchPage" data-role="page" data-add-back-btn="true">
-
 	<div data-role="header" data-position="fixed">
 		<h1>SEARCH</h1>
+        <div class="ui-btn-right" data-role="controlgroup" data-type="horizontal">
+            <a class="refreshBtn" href="#" data-role="button" data-icon="refresh" >Refresh</a>
+        </div>
 	</div><!-- /header -->
 
-	<div data-role="content">	
-<!-- 		<ul id="search_data" data-role="listview" data-filter="true">
-		</ul> -->
-		<ul id="search_data" data-role="listview" data-split-icon="gear" data-filter="true">
+	<div data-role="content" id="my_wrapper">
+		<ul id="search_data" data-role="listview" data-split-icon="plus" data-filter="true">
+
 		</ul>
-		<div id="dialog_box">
-		</div>
 	</div>
 	
 	<div data-role="footer" data-id="foo1" data-position="fixed">
@@ -32,7 +31,6 @@
 				<ul>
 					<li><a href="index.html" data-prefetch="true" rel="external">HOME</a></li>
 					<li><a href="cart.html" data-prefetch="true" rel="external">CART</a></li>
-					<li><a href="checkout.html" data-prefetch="true" rel="external">CHECKOUT</a></li>
 				</ul>
 				
 			</div><!-- /navbar -->

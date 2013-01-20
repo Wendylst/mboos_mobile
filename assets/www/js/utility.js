@@ -1,15 +1,13 @@
 var serviceURL = "http://192.168.1.101/MBOOS/mobile_ajax/mobile/";
 
-var myCart = []; 
+var temp_id = null;
 
 $(document).live("pageinit", function(event){
 	
 	categoryPage();
 	searchPage();
-	
 
 });
-
 
 
 $('#detailsPage').live("pageshow", function(event){
@@ -28,11 +26,9 @@ $('#detailsPage').live("pageshow", function(event){
     	var strItem = item.toString();
     	var items = strItem.split(",");
     	
-    	//alert(items[0] + items[1] + items[2] + items[3]);
-    
-    	//onDeviceReady();
+
     	addItem(items[0], items[1], items[2], items[3]);
-    	//addItem("Math");
+
     
   	
 	
@@ -40,7 +36,46 @@ $('#detailsPage').live("pageshow", function(event){
    
 	
 });
+ 
+/* Script for Category Item Page*/
+$('#categoryPage').live("pageshow", function(event){
 
+	get_cat_info();
+	
+});
+
+/* function for Category Page */
+function get_cat_info() {
+	
+	var id;
+	
+	id = getUrlVars()["id"];
+		
+	
+	$.getJSON(serviceURL + 'getByCategory?id='+id, function(data) {
+	$('#category_data li').remove();
+	cat_item = data.cat_item_list;
+	
+		$.each(cat_item, function(index, info) {
+			$('#category_data').append('<li><a class="id_item" href="buy_item.html?id=' + info.mboos_product_id + '">' +
+					'<h4>' + info.mboos_product_name +'</h4>' +
+					"</a><a class='id_link' href='buy_item.html?id=" + info.mboos_product_id + "'  data-transition='slideup'>Add to Cart</a></li>");
+					    			
+		});
+		
+		$('#category_data').listview('refresh');
+	});
+	
+} 
+
+/* Script for Category Item Page*/
+$('#categoriesPage').live("pageshow", function(event){
+
+	categoryPage();
+	
+});
+
+/* Get the ID from URL */
 function getUrlVars() {
     var vars = [], hash;
     var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
@@ -53,12 +88,14 @@ function getUrlVars() {
 		    return vars;
 		}  
 
+/* Get Item Info from Search List*/
 function get_info() {
 	
 	
 	var id = getUrlVars()["id"];
 
 	//$('p.item_name').empty().append(id);
+	
 	$.getJSON(serviceURL + 'get_info?id='+id, function(data) {
 		
 	item_info = data.item_info;
@@ -91,7 +128,7 @@ function categoryPage() {
 	categories = data.categories;
 	
 		$.each(categories, function(index, category) {
-			$('#categoryList').append('<li><a href="acura.html?id=' + category.mboos_product_category_id + '">' +
+			$('#categoryList').append('<li><a class="id_item" href="category_item.html?id=' + category.mboos_product_category_id + '">' +
 					'<h4>' + category.mboos_product_category_name +'</h4>' +
 					'</a></li>');
 		});
@@ -130,10 +167,17 @@ $('a.id_link').live('click', function(event) {
 	
 }
 
+
+$(".refreshBtn").live( "click", function(event, ui) {
+	
+	searchPage();
+	
+	});
+
 $('#cartPage').live("pageshow", function(event){
 
-	setuopDB();
-	checkConnection();
+	setupDB();
+
 	
 });
 
@@ -166,27 +210,31 @@ function populateDB(tx) {
 function queryDB(tx) {
 	
     tx.executeSql('SELECT * FROM CART', [], querySuccess, errorCB);
+    tx.executeSql('SELECT SUM(item_price) AS itemSubtotal FROM CART', [], querySubTotalSuccess, errorCB);
     
 }
 
 // Query the success callback
 function querySuccess(tx, results) {
-    
-	 //  $('#cart_data').append('<li>'+ results.rows.item(i).title + '</li>');
+
 	var len = results.rows.length;
-	//$('#cart_data').append("CART table: " + len + " rows found.");
 	
 	for (var i=0; i<len; i++){
 		
-			//$('#cart_data').append("Row = " + i + " ID = " + results.rows.item(i).id + " Data =  " + results.rows.item(i).data);
-			//$('#cart_data').append("<li>" + results.rows.item(i).data + "<li>");
 			$('#cart_data').append('<li><a class="cart_edit_item" href="cart_edit_item.html?id=' + results.rows.item(i).item_id + '">' +
-							'<h4>' + results.rows.item(i).item_name  +'</h4>' + '</a>'); 
+							'<h4>' + results.rows.item(i).item_name  +'</h4>' + '</a><span class="ui-li-count">'+ results.rows.item(i).item_qty +'</span></li>'); 
 			$("#cart_data").listview("refresh");
 			
 	    }
 
     
+}
+
+function querySubTotalSuccess(tx, results) {
+	
+	$('#cartSubtotal').append("PHP" + results.rows.item(0).itemSubtotal + "");
+	
+
 }
 
 // Transaction error callback
@@ -207,7 +255,7 @@ function successCB() {
 }
 
 // PhoneGap is ready
-function setuopDB() {
+function setupDB() {
 	
     var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
     db.transaction(populateDB, errorCB, successCB);
@@ -231,20 +279,6 @@ function dbErrorHandler(err){
 
 /*Checking if there's Internet Connection Script */
 
-function checkConnection() {
-    var networkState = navigator.network.connection.type;
 
-    var states = {};
-    states[Connection.UNKNOWN]  = 'Unknown connection';
-    states[Connection.ETHERNET] = 'Ethernet connection';
-    states[Connection.WIFI]     = 'WiFi connection';
-    states[Connection.CELL_2G]  = 'Cell 2G connection';
-    states[Connection.CELL_3G]  = 'Cell 3G connection';
-    states[Connection.CELL_4G]  = 'Cell 4G connection';
-    states[Connection.NONE]     = 'No network connection';
-
-    alert('Connection type: ' + networkState);
-
-}
 
 

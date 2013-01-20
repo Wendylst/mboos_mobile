@@ -12,28 +12,22 @@
    	
 </head> 
 <body>
-<div id="cartPage" data-role="page">
+<div id="categoryPage" data-role="page" data-add-back-btn="true">
 		<div data-role="header" data-position="fixed" >
-			<h1>CART</h1>
-			<div class="ui-btn-right" data-role="controlgroup" data-type="horizontal">
-            <a class="checkoutBtn" href="checkout.html" data-role="button" >Checkout</a>
-        </div>
+			<h1>Category</h1>
 		</div><!-- /header -->
-		<div id="center_box" data-role="content">
-			<div id="subTotalBox">
-				<p class="subTotal_label"><label id="cartSubtotal">Subtotal: </label></p>
-				<p class="item_qty_label">Qty</p>
-			</div>	 
-			<ul id="cart_data" data-role="listview">	
-				
-			</ul>
-		</div>
+		
+	<div data-role="content" id="my_wrapper">
+		<ul id="category_data" data-role="listview" data-split-icon="plus" data-filter="true">
+		
+		</ul>
+	</div>
 		
 		<div data-role="footer" data-id="foo1" data-position="fixed">
 			<div data-role="navbar">
 				<ul>
 					<li><a href="index.html" data-prefetch="true" rel="external">HOME</a></li>
-					<li><a href="cart.html" data-prefetch="true" rel="external" class="ui-btn-active ui-state-persist">CART</a></li>
+					<li><a href="cart.html" data-prefetch="true" rel="external" >CART</a></li>
 				</ul>
 				
 			</div><!-- /navbar -->

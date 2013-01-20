@@ -11,7 +11,21 @@ public final class R {
     public static final class attr {
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
+        public static final int animation1=0x7f020000;
+        public static final int ic_launcher=0x7f020001;
+        public static final int loading1=0x7f020002;
+        public static final int loading10=0x7f020003;
+        public static final int loading11=0x7f020004;
+        public static final int loading12=0x7f020005;
+        public static final int loading2=0x7f020006;
+        public static final int loading3=0x7f020007;
+        public static final int loading4=0x7f020008;
+        public static final int loading5=0x7f020009;
+        public static final int loading6=0x7f02000a;
+        public static final int loading7=0x7f02000b;
+        public static final int loading8=0x7f02000c;
+        public static final int loading9=0x7f02000d;
+        public static final int splash=0x7f02000e;
     }
     public static final class layout {
         public static final int main=0x7f030000;
