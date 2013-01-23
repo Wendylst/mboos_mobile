@@ -16,7 +16,7 @@
 div#subTotalBox { left:0;background-color:gray; height:50px;  position: fixed; top:43px; width: 100%; z-index: 1000; }
 #cart_data { margin-top:35px; }
 .subTotal_label { float:left; }
-.item_qty_label { float: right; width:65px; }
+.item_qty_label { float: right; width:78px; }
 
 
 

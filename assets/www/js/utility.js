@@ -58,7 +58,7 @@ function get_cat_info() {
 	
 		$.each(cat_item, function(index, info) {
 			$('#category_data').append('<li><a class="id_item" href="buy_item.html?id=' + info.mboos_product_id + '">' +
-					'<h4>' + info.mboos_product_name +'</h4>' +
+					'<h4>' + info.mboos_product_name +'</h4>' + '<p>' + info.mboos_product_price + '</p>' +
 					"</a><a class='id_link' href='buy_item.html?id=" + info.mboos_product_id + "'  data-transition='slideup'>Add to Cart</a></li>");
 					    			
 		});
@@ -178,6 +178,12 @@ $('#cartPage').live("pageshow", function(event){
 
 	setupDB();
 
+    $('a.deleteBtn').click(function() {
+    	
+    	alert('deleting...');
+
+    });
+
 	
 });
 
@@ -200,7 +206,7 @@ function emptyDB() {
 	    
 function populateDB(tx) {
 		
-        tx.executeSql('CREATE TABLE IF NOT EXISTS CART (id INTEGER PRIMARY KEY, item_id, item_name, item_price, item_qty)');
+        tx.executeSql('CREATE TABLE IF NOT EXISTS CART (id INTEGER PRIMARY KEY, item_id, item_name, item_price DOUBLE(16,2), item_qty, price_total DOUBLE(16,2))');
 
 
 }
@@ -210,7 +216,7 @@ function populateDB(tx) {
 function queryDB(tx) {
 	
     tx.executeSql('SELECT * FROM CART', [], querySuccess, errorCB);
-    tx.executeSql('SELECT SUM(item_price) AS itemSubtotal FROM CART', [], querySubTotalSuccess, errorCB);
+    tx.executeSql('SELECT SUM(price_total) AS itemSubtotal FROM CART', [], querySubTotalSuccess, errorCB);
     
 }
 
@@ -221,8 +227,11 @@ function querySuccess(tx, results) {
 	
 	for (var i=0; i<len; i++){
 		
-			$('#cart_data').append('<li><a class="cart_edit_item" href="cart_edit_item.html?id=' + results.rows.item(i).item_id + '">' +
-							'<h4>' + results.rows.item(i).item_name  +'</h4>' + '</a><span class="ui-li-count">'+ results.rows.item(i).item_qty +'</span></li>'); 
+			$('#cart_data').append('<li><a class="cart_edit_item" href="cart_edit_item.html?id=' + results.rows.item(i).id + '">' +
+							'<h4>' + results.rows.item(i).item_name  +'</h4>' + 
+							'<p>PHP ' + results.rows.item(i).item_price + '</p>' +
+							'<a class="deleteBtn" href="item_delete.html?id=' + results.rows.item(i).id + '" data-role="button" data-icon="delete" data-iconpos="notext">Delete</a> ' +
+							'</a><span class="ui-li-count">'+ results.rows.item(i).item_qty +'</span></li>'); 
 			$("#cart_data").listview("refresh");
 			
 	    }
@@ -232,7 +241,14 @@ function querySuccess(tx, results) {
 
 function querySubTotalSuccess(tx, results) {
 	
-	$('#cartSubtotal').append("PHP" + results.rows.item(0).itemSubtotal + "");
+	if(results.rows.item(0).itemSubtotal == null) {
+		
+		$('#cartSubtotal').append("0");
+		
+	} else {
+		$('#cartSubtotal').append("PHP " + results.rows.item(0).itemSubtotal + "");
+	}
+	
 	
 
 }
@@ -265,10 +281,12 @@ function setupDB() {
 
 function addItem(id, name, price, qty) {
 	
+	var total_price = price * qty;
+	
 	var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
 	db.transaction(function(tx) {
 	
-		tx.executeSql('INSERT INTO CART (item_id, item_name, item_price, item_qty) VALUES ("' + id + '","' + name +'","' + price +'","' + qty +'")');
+		tx.executeSql('INSERT INTO CART (item_id, item_name, item_price, item_qty, price_total) VALUES ("' + id + '","' + name +'","' + price +'","' + qty +'","' + total_price + '")');
 	
 	}, dbErrorHandler);
 }
@@ -277,7 +295,102 @@ function dbErrorHandler(err){
     alert("DB Error: "+err.message + "\nCode="+err.code);
 }
 
-/*Checking if there's Internet Connection Script */
+/* Cart Features Script */
+
+$('#delete_itemPage').live("pageshow", function(event){
+
+	delete_item();
+	
+});
+
+/* function for Category Page */
+function delete_item() {
+	
+	var id;
+	
+	id = getUrlVars()["id"];
+		
+	del_table(id);
+	
+} 
+
+function del_table(id) {
+	
+	var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
+	db.transaction(function(tx) {
+	
+		tx.executeSql('DELETE FROM CART WHERE id ="' + id + '"');
+	
+	}, dbErrorHandler);
+}
+
+$('#editPage').live("pageshow", function(event){
+
+	var id;
+	
+	id = getUrlVars()["id"];
+	
+	select_table(id);
+	
+});
+
+function select_table(id) {
+	
+	var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
+	db.transaction(function(tx) {
+	
+		tx.executeSql('SELECT * FROM CART WHERE id="' + id + '"', [], selected_query, errorCB);
+	
+	}, dbErrorHandler);
+}
+
+//Query the success callback
+function selected_query(tx, results) {
+
+	var len = results.rows.length;
+	
+	for (var i=0; i<len; i++){
+		
+		
+		$('.item_name').append(results.rows.item(i).item_name);
+		$('.item_price').append(results.rows.item(i).item_price);
+		$('.qtyForm').val(results.rows.item(i).item_qty);
+		$('.cart_id').val(results.rows.item(i).id);
+		
+		$('.item_id').val(results.rows.item(i).item_id);
+		$('.item_name_val').val(results.rows.item(i).item_name);	
+		$('.item_price_val').val(results.rows.item(i).item_price);	
+	    }  
+}
+
+$('#editPage').live("pageshow", function(event){
+
+    $('.saveBtn').click(function() {
+    	
+    	//alert('Saving...');
+    	var name = $('.item_name_val').val();
+    	var price = $('.item_price_val').val();
+    	var qty = $('.qtyForm').val();
+    	var cart_id = $('.cart_id').val();
+    	var item_id = $('.item_id').val();
+    	var total_price = qty * price;
+    	//alert(name + price + qty + id + item_id);
+    	update_table(cart_id,qty, total_price);
+	
+    });
+   
+	
+});
+
+function update_table(id, qty, ttl_price) {
+	
+	var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
+	db.transaction(function(tx) {
+		//item_id, item_name, item_price, item_qty
+		tx.executeSql('UPDATE CART SET item_qty='+ qty +', price_total='+ ttl_price +' WHERE id="'+ id +'"', [], errorCB);
+	
+	}, dbErrorHandler);
+}
 
 
 
