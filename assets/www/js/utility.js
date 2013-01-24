@@ -1,11 +1,26 @@
 var serviceURL = "http://192.168.1.101/MBOOS/mobile_ajax/mobile/";
 
 var temp_id = null;
+var reg_id = null;
 
 $(document).live("pageinit", function(event){
 	
-	categoryPage();
-	searchPage();
+	reg_checker();
+	queryRegTable();
+	
+	if(reg_id == 1) {
+		
+		categoryPage();
+		searchPage();
+		
+		
+		
+	} else {
+		
+		$.mobile.changePage( "registration.html", { transition: "slideup"} );
+		
+	}
+
 
 });
 
@@ -34,6 +49,18 @@ $('#detailsPage').live("pageshow", function(event){
 	
     });
    
+	
+});
+
+/* Script for Registration Page*/
+$('#regPage').live("pageshow", function(event){
+
+	$('.saveBtn').click(function() {
+		
+		//alert("Saving....");
+		save_reg();
+		$.mobile.changePage( "index.html", { transition: "slideup"} );
+	});
 	
 });
  
@@ -191,6 +218,7 @@ $('#checkoutPage').live("pageshow", function(event) {
 	
 	emptyDB();
 	
+	
 });
 
 function emptyDB() {
@@ -299,7 +327,9 @@ function dbErrorHandler(err){
 
 $('#delete_itemPage').live("pageshow", function(event){
 
-	delete_item();
+	delete_item(); 
+
+	window.location.href = 'cart.html';
 	
 });
 
@@ -313,6 +343,7 @@ function delete_item() {
 	del_table(id);
 	
 } 
+
 
 function del_table(id) {
 	
@@ -393,5 +424,55 @@ function update_table(id, qty, ttl_price) {
 }
 
 
+function reg_checker() {
+	
+    var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
+    db.transaction(createRegTable, errorCB);
+    
+}
+
+function createRegTable(tx) {
+	
+    tx.executeSql('CREATE TABLE IF NOT EXISTS USERINFO (id unique, status)');  
+
+}
+
+
+function queryRegTable() {
+	
+	var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
+	db.transaction(function(tx) {
+	
+		tx.executeSql('SELECT * FROM USERINFO WHERE status="1"', [], selected_regTable, errorCB);
+	
+	}, dbErrorHandler);
+}
+
+function selected_regTable(tx, results) {
+
+	reg_id = results.rows.length;
+	
+	return reg_id;
+}
+
+function save_reg() {
+	
+	var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
+	db.transaction(function(tx) {
+	
+		tx.executeSql('INSERT INTO USERINFO (status) VALUES ("1")');
+	
+	}, dbErrorHandler);
+}
+
+function drop_regTable() {
+	
+	var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
+	db.transaction(function(tx) {
+	
+		tx.executeSql('DROP TABLE USERINFO');
+	
+	}, dbErrorHandler);
+}
 
 
