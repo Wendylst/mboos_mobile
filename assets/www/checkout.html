@@ -18,16 +18,24 @@
 		<div data-role="header" data-position="fixed" >
 			<h1>Checkout</h1>
 		</div><!-- /header -->
-		
+		<div data-role="popup" id="uValidationMsg">
+			<p>Username is required<p>
+		</div>
+		<div data-role="popup" id="pValidationMsg">
+			<p>Password is required<p>
+		</div>
+		<div data-role="popup" id="eValidationMsg">
+			<p>Invalid Email Address<p>
+		</div>
 		<div id="paypalBox" data-role="content">	
 			<p>Sign in to PayPal</p>
 			<div data-role="fieldcontain" class="ui-hide-label">
 				<label for="username">Email Address:</label>
-				<input type="text" name="username" class="username" value="" placeholder="Email Address"/>
+				<input type="text" name="username" id="username" value="" placeholder="Email Address"/>
 			</div>
 			<div data-role="fieldcontain" class="ui-hide-label">
 				<label for="password">Password:</label>
-				<input type="text" name="password" class="password" value="" placeholder="Password"/>
+				<input type="password" name="password" id="password" value="" placeholder="Password"/>
 			</div>
 			<a class="paypalBtn" href="confirmation.html" data-theme="b" data-role="button">Pay via Paypal</a>
 		</div>

@@ -205,16 +205,43 @@ function searchPage() {
 }
 
 
-$(".refreshBtn").live( "click", function(event, ui) {
+$(".sRefreshBtn").live( "click", function(event, ui) {
 	
+	$("#sRefreshMsg").popup('open');
+	window.setTimeout(function() {$("#sRefreshMsg").popup('close')}, 1000);
 	searchPage();
+	
+	});
+
+$(".cRefreshBtn").live( "click", function(event, ui) {
+	
+	$("#cRefreshMsg").popup('open');
+	window.setTimeout(function() {$("#cRefreshMsg").popup('close')}, 1000);
+	categoryPage();
 	
 	});
 
 $('#cartPage').live("pageshow", function(event){
 
 	setupDB();
-
+	
+	$('.checkoutBtn').click(function() {
+		
+		var cart_items = localStorage.getItem("cart_items")
+		
+		if(cart_items == 0) {
+			
+			$("#checkoutMsg").popup('open');
+			window.setTimeout(function() {$("#checkoutMsg").popup('close')}, 1000);
+			return false;	
+			
+		} else {
+			
+			return true;
+			
+		}		
+	});
+	
 });
 
 $('#checkoutPage').live("pageshow", function(event) {
@@ -222,9 +249,38 @@ $('#checkoutPage').live("pageshow", function(event) {
 	var cInfo = JSON.parse(localStorage.getItem("customer_info"));
 	var Name = cInfo.name;
 	
-	var username = $('.username').val();
-	var pword = $('.password').val();
 	
+	$('.paypalBtn').click(function() {
+		
+		var username = $('#username').val();
+		var pword = $('#password').val();
+		var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
+		if(username == "") { 
+			
+			$("#uValidationMsg").popup('open');
+			window.setTimeout(function() {$("#uValidationMsg").popup('close')}, 1000);
+			return false;
+			
+		} else if(!username.match(emailExp)) {
+			
+			$("#eValidationMsg").popup('open');
+			window.setTimeout(function() {$("#eValidationMsg").popup('close')}, 1000);
+			return false;
+			
+			
+		} else if(pword == "") {
+			
+			$("#pValidationMsg").popup('open');
+			window.setTimeout(function() {$("#pValidationMsg").popup('close')}, 1000);
+			return false;
+			
+		} else {
+			
+			return true;
+			
+		}
+		
+	});
 	query_cart();
 	
 	
@@ -332,6 +388,9 @@ function queryDB(tx) {
 function querySuccess(tx, results) {
 
 	var len = results.rows.length;
+	
+	// var for checking the Cart
+	localStorage.setItem('cart_items', len);
 	
 	for (var i=0; i<len; i++){
 		

@@ -7,7 +7,7 @@
 #qtyForm_label { float:left;  margin-top:0.3em;  }
 #basic { width:100px;  margin: 0 0 0 5em; }
 .addCartBtn, .cancelBtn { clear:both; }
-.item_desc { padding:2em 0 0 0; }
+.item_desc { padding:1em 0 0 0; }
 #qty_header {  height:5em; }
 
 #my_wrapper .ui-listview-filter {left: 15px; position: fixed; top:55px; width: 100%; z-index: 1000;}
