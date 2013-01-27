@@ -12,8 +12,11 @@
    	<script src="js/jquery.mobile-1.2.0.js"></script>
 </head>
 <body>
-<div id="searchPage" data-role="page" data-add-back-btn="true">
+<div id="searchPage" data-role="page">
 	<div data-role="header" data-position="fixed">
+		<div class="ui-btn-left" data-role="controlgroup" data-type="horizontal">
+            <a class="categorieshBtn" href="categories.html" data-role="button"  data-icon="grid" >Categories</a>
+        </div>
 		<h1>SEARCH</h1>
         <div class="ui-btn-right" data-role="controlgroup" data-type="horizontal">
             <a class="refreshBtn" href="#" data-role="button" data-icon="refresh" >Refresh</a>
@@ -29,7 +32,8 @@
 	<div data-role="footer" data-id="foo1" data-position="fixed">
 			<div data-role="navbar">
 				<ul>
-					<li><a href="index.html" data-prefetch="true" rel="external">HOME</a></li>
+					<li><a href="index.html" data-prefetch="true" rel="external" class="ui-btn-active ui-state-persist">HOME</a></li>
+					<li><a href="profile.html" data-prefetch="true">PROFILE</a></li>
 					<li><a href="cart.html" data-prefetch="true" rel="external">CART</a></li>
 				</ul>
 				

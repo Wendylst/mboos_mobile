@@ -1,0 +1,63 @@
+<!DOCTYPE html> 
+<html> 
+	<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">  
+    <script src="js/cordova-1.9.0.js"></script>
+    <link rel="stylesheet" href="css/style.css" /> 	
+	<link rel="stylesheet" href="css/jquery.mobile-1.2.0.css" />
+	<script src="js/jquery.js"></script>
+	<script src="js/utility.js"></script>
+   	<script src="js/jquery.mobile-1.2.0.js"></script>
+
+   	
+   	
+</head> 
+<body>
+<div id="profilePage" data-role="page">
+		<div data-role="header" data-position="fixed" >
+			<h1>Profile</h1>
+		</div><!-- /header -->
+		
+		<div data-role="content" >	
+
+			<div data-role="collapsible-set" data-theme="b" data-content-theme="d" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
+				<div data-role="collapsible">
+					<h2>Customer Information</h2>
+					<ul data-role="listview" data-filter-theme="c" data-divider-theme="d">
+						<div id="profileContent" data-role="content">	
+						
+							<p><label for="cName" >Complete Name</label><input id="cName" name="came" type="text" class="required"/></p>
+							<p><label for="address">Address</label><input id="address" name="address" type="text" class="required" /></p>
+							<p><label for="email">Email Address</label><input id="email" name="email" type="text" class="required" /></p>
+							<p><label for="cNumber">Cellphone Number</label><input id="cNumber" name="cNumber"  type="number" class="required"/></p>
+							<p><a class="profileSaveBtn" href="#popupInfo" data-rel="popup" data-role="button" data-inline="true">Save</a></p>
+						
+						</div>
+						<div data-role="popup" id="popupInfo" class="ui-content" data-theme="e" style="max-width:350px;">
+				          <p>Successfully Updated.</p>
+						</div>
+					</ul>
+				</div>
+				<div data-role="collapsible">
+					<h2>Orders History</h2>
+					<ul data-role="listview" data-filter="true" data-theme="d" data-divider-theme="d">
+						<li>Transaction 1</li>
+						<li>Transaction 2</li>
+					</ul>
+				</div>
+		</div>
+		
+		<div data-role="footer" data-id="foo1" data-position="fixed">
+			<div data-role="navbar">
+				<ul>
+					<li><a href="index.html" data-prefetch="true" rel="external">HOME</a></li>
+					<li><a href="profile.html" data-prefetch="true" class="ui-btn-active ui-state-persist">PROFILE</a></li>
+					<li><a href="cart.html" data-prefetch="true" rel="external" >CART</a></li>
+				</ul>
+				
+			</div><!-- /navbar -->
+		</div><!-- /footer -->	
+</div><!-- /page -->
+</body>
+</html>

@@ -10,7 +10,7 @@
 .item_desc { padding:2em 0 0 0; }
 #qty_header {  height:5em; }
 
-.ui-listview-filter {left: 15px; position: fixed; top:55px; width: 100%; z-index: 1000;}
+#my_wrapper .ui-listview-filter {left: 15px; position: fixed; top:55px; width: 100%; z-index: 1000;}
 #search_data, #category_data { margin-top:25px; }
 
 div#subTotalBox { left:0;background-color:gray; height:50px;  position: fixed; top:43px; width: 100%; z-index: 1000; }
@@ -18,9 +18,14 @@ div#subTotalBox { left:0;background-color:gray; height:50px;  position: fixed; t
 .subTotal_label { float:left; }
 .item_qty_label { float: right; width:78px; }
 
+#regContent input.error { border-color:red; }
+
+#dialog_info input.error { border-color:red; }
+#paypalBox input.error { border-color:red; }
 
 
 			
+
 
 
 
