@@ -15,7 +15,7 @@
 </head> 
 <body>
 <div id="confirmationPage" data-role="page">
-		<div data-role="header" data-position="fixed" >
+		<div data-role="header" data-position="fixed" data-theme="b" >
 			<h1>Message</h1>
 		</div><!-- /header -->
 		
@@ -23,12 +23,12 @@
 			<p>Congratulations! Thanks for Buying</p>
 		</div>
 		
-		<div data-role="footer" data-id="foo1" data-position="fixed">
-			<div data-role="navbar">
+		<div data-role="footer" data-id="foo1" data-position="fixed" data-theme="b">
+			<div data-role="navbar" class="nav-glyphish-example" data-iconpos="top">
 				<ul>
-					<li><a href="index.html" data-prefetch="true" rel="external">HOME</a></li>
-					<li><a href="profile.html" data-prefetch="true">PROFILE</a></li>
-					<li><a href="cart.html" data-prefetch="true" rel="external" class="ui-btn-active ui-state-persist">CART</a></li>
+					<li><a id="home" href="index.html" data-prefetch="true" rel="external" data-icon="custom">HOME</a></li>
+					<li><a id="profile" href="profile.html" data-prefetch="true" data-icon="custom">PROFILE</a></li>
+					<li><a id="cart" href="cart.html" data-prefetch="true" rel="external"  data-icon="custom">CART</a></li>
 				</ul>
 				
 			</div><!-- /navbar -->

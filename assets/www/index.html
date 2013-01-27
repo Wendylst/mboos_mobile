@@ -16,7 +16,7 @@
 <body>
 <div id="homePage" data-role="page">
 
-	<div data-role="header" data-position="fixed">
+	<div data-role="header" data-position="fixed" data-theme="b">
 		<h1>HOME</h1>
 	</div><!-- /header -->
 
@@ -27,15 +27,16 @@
 			</div>
 	</div>
 	
-	<div data-role="footer" data-id="foo1" data-position="fixed">
-			<div data-role="navbar">
+		<div data-role="footer" data-id="foo1" data-position="fixed" data-theme="b">
+			<div data-role="navbar" class="nav-glyphish-example" data-iconpos="top">
 				<ul>
-					<li><a href="index.html" data-prefetch="true" data-transition="slideup" class="ui-btn-active ui-state-persist">HOME</a></li>
-					<li><a href="profile.html" data-prefetch="true">PROFILE</a></li>
-					<li><a href="cart.html" data-prefetch="true">CART</a></li>
+					<li><a id="home" href="index.html" data-prefetch="true" rel="external" data-icon="custom" class="ui-btn-active ui-state-persist">HOME</a></li>
+					<li><a id="profile" href="profile.html" data-prefetch="true" data-icon="custom">PROFILE</a></li>
+					<li><a id="cart" href="cart.html" data-prefetch="true" rel="external"  data-icon="custom">CART</a></li>
 				</ul>
+				
 			</div><!-- /navbar -->
-	</div><!-- /footer -->	
+		</div><!-- /footer -->	
 </div><!-- /page -->
 </body>
 </html>

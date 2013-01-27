@@ -13,7 +13,7 @@
 </head> 
 <body>
 <div id="categoryPage" data-role="page" data-add-back-btn="true">
-		<div data-role="header" data-position="fixed" >
+		<div data-role="header" data-position="fixed" data-theme="b" >
 			<h1>Category</h1>
 			<div class="ui-btn-right" data-role="controlgroup" data-type="horizontal">
             	<a class="refreshBtn" href="#" data-role="button" data-icon="refresh" >Refresh</a>
@@ -26,12 +26,12 @@
 		</ul>
 	</div>
 		
-		<div data-role="footer" data-id="foo1" data-position="fixed">
-			<div data-role="navbar">
+		<div data-role="footer" data-id="foo1" data-position="fixed" data-theme="b">
+			<div data-role="navbar" class="nav-glyphish-example" data-iconpos="top">
 				<ul>
-					<li><a href="index.html" data-prefetch="true" rel="external" data-transition="slideup" rel="external">HOME</a></li>
-					<li><a href="profile.html" data-prefetch="true">PROFILE</a></li>
-					<li><a href="cart.html" data-prefetch="true" rel="external" >CART</a></li>
+					<li><a id="home" href="index.html" data-prefetch="true" rel="external" data-icon="custom">HOME</a></li>
+					<li><a id="profile" href="profile.html" data-prefetch="true" data-icon="custom">PROFILE</a></li>
+					<li><a id="cart" href="cart.html" data-prefetch="true" rel="external" data-icon="custom">CART</a></li>
 				</ul>
 				
 			</div><!-- /navbar -->

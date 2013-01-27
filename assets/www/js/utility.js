@@ -410,7 +410,7 @@ function querySubTotalSuccess(tx, results) {
 	
 	if(results.rows.item(0).itemSubtotal == null) {
 		
-		$('#subtotalVal').empty().append("0");
+		$('#subtotalVal').empty().append("PHP 0");
 		
 	} else {
 		

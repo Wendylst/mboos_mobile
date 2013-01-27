@@ -15,11 +15,11 @@
 </head> 
 <body>
 <div id="checkoutPage" data-role="page" data-add-back-btn="true">
-		<div data-role="header" data-position="fixed" >
+		<div data-role="header" data-position="fixed" data-theme="b">
 			<h1>Checkout</h1>
 		</div><!-- /header -->
 		<div data-role="popup" id="uValidationMsg">
-			<p>Username is required<p>
+			<p>Email Address is required<p>
 		</div>
 		<div data-role="popup" id="pValidationMsg">
 			<p>Password is required<p>
@@ -28,24 +28,20 @@
 			<p>Invalid Email Address<p>
 		</div>
 		<div id="paypalBox" data-role="content">	
-			<p>Sign in to PayPal</p>
 			<div data-role="fieldcontain" class="ui-hide-label">
-				<label for="username">Email Address:</label>
-				<input type="text" name="username" id="username" value="" placeholder="Email Address"/>
+				<p>Sign in to PayPal</p>
+				<p><label for="username">Email Address:</label><input type="text" name="username" id="username" value="" placeholder="Email Address"/></p>
+				<p><label for="password">Password:</label><input type="password" name="password" id="password" value="" placeholder="Password"/></p>	
+				<p><a class="paypalBtn" href="confirmation.html" data-theme="b" data-role="button">Pay via Paypal</a></p>
 			</div>
-			<div data-role="fieldcontain" class="ui-hide-label">
-				<label for="password">Password:</label>
-				<input type="password" name="password" id="password" value="" placeholder="Password"/>
-			</div>
-			<a class="paypalBtn" href="confirmation.html" data-theme="b" data-role="button">Pay via Paypal</a>
 		</div>
 		
-		<div data-role="footer" data-id="foo1" data-position="fixed">
-			<div data-role="navbar">
+		<div data-role="footer" data-id="foo1" data-position="fixed" data-theme="b">
+			<div data-role="navbar" class="nav-glyphish-example" data-iconpos="top">
 				<ul>
-					<li><a href="index.html" data-prefetch="true" rel="external">HOME</a></li>
-					<li><a href="profile.html" data-prefetch="true">PROFILE</a></li>
-					<li><a href="cart.html" data-prefetch="true" rel="external" class="ui-btn-active ui-state-persist">CART</a></li>
+					<li><a id="home" href="index.html" data-prefetch="true" rel="external" data-icon="custom">HOME</a></li>
+					<li><a id="profile" href="profile.html" data-prefetch="true" data-icon="custom">PROFILE</a></li>
+					<li><a id="cart" href="cart.html" data-prefetch="true" rel="external" class="ui-btn-active ui-state-persist" data-icon="custom">CART</a></li>
 				</ul>
 				
 			</div><!-- /navbar -->
