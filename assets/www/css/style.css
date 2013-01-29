@@ -1,4 +1,5 @@
 /*MAIN CSS*/
+p { padding:0; margin:0; }
 
 .center-wrapper{  margin:auto;  text-align: center; width:100%; } 
 #categoriesPage form.ui-listview-filter { display:none; }
@@ -13,12 +14,14 @@
 #my_wrapper .ui-listview-filter {left: 15px; position: fixed; top:55px; width: 100%; z-index: 1000;}
 #search_data, #category_data { margin-top:25px; }
 
-div#subTotalBox { left:0;background-color:#e3e3e3; height:50px;  position: fixed; top:43px; width: 100%; z-index: 1000; }
+div#subTotalBox { left:0;background-color:#e3e3e3; height:60px;  position: fixed; top:43px; width: 100%; z-index: 1000; }
+div#subTotalBox p { margin: 5px 0 5px 0; }
 #cart_data { margin-top:35px; }
 .subTotal_label { float:left; }
 .item_qty_label { float: right; width:78px; }
 
 #regContent input.error { border-color:red; }
+#domainPage input.error { border-color:red; }
 
 #dialog_info input.error { border-color:red; }
 #paypalBox input.error { border-color:red; }
@@ -28,6 +31,9 @@ div#subTotalBox { left:0;background-color:#e3e3e3; height:50px;  position: fixed
 #profile .ui-icon { background:  url(images/111-user.png) 50% 50% no-repeat; background-size: 26px 26px;  }
 #cart .ui-icon { background:  url(images/80-shopping-cart.png) 50% 50% no-repeat;  background-size: 26px 26px; }
 #home .ui-icon { background:  url(images/53-house.png) 50% 50% no-repeat;  background-size: 26px 26px; }
+
+#username, #password {margin: 1em 0 1em 0;}
+
 
 
 

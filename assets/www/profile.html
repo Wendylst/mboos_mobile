@@ -23,7 +23,7 @@
 
 			<div data-role="collapsible-set" data-theme="b" data-content-theme="d" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
 				<div data-role="collapsible">
-					<h2>Customer Information</h2>
+					<h2>Profile</h2>
 					<ul data-role="listview" data-filter-theme="c" data-divider-theme="d">
 						<div id="profileContent" data-role="content">	
 						
@@ -31,7 +31,7 @@
 							<p><label for="address">Address</label><input id="address" name="address" type="text" class="required" /></p>
 							<p><label for="email">Email Address</label><input id="email" name="email" type="text" class="required" /></p>
 							<p><label for="cNumber">Cellphone Number</label><input id="cNumber" name="cNumber"  type="number" class="required"/></p>
-							<p><a class="profileSaveBtn" href="#popupInfo" data-rel="popup" data-role="button" data-inline="true">Save</a></p>
+							<p><a class="profileSaveBtn" href="#popupInfo" data-theme="b" data-rel="popup" data-role="button" data-position-to="window">Save</a></p>
 						
 						</div>
 						<div data-role="popup" id="popupInfo" class="ui-content" data-theme="e" style="max-width:350px;">
@@ -40,12 +40,26 @@
 					</ul>
 				</div>
 				<div data-role="collapsible">
-					<h2>Orders History</h2>
+					<h2>Purchase Summary</h2>
 					<ul data-role="listview" data-filter="true" data-theme="d" data-divider-theme="d">
 						<li>Transaction 1</li>
 						<li>Transaction 2</li>
 					</ul>
 				</div>
+				<div data-role="collapsible">
+					<h2>Domain Name</h2>
+					<ul data-role="listview" data-theme="d" data-divider-theme="d">
+						<div id="regContent" data-role="content">		
+								<p><label for="dName" >Domain Name *</label><input  id="dName" name="dName" type="text" class="required"/></p>
+								<p><input class="updatingDomainBtn" type="submit" value="Save" data-theme="b"/></p>
+								<div data-role="popup" id="updatingDomainMsg">
+									<p class="cartMsg">Updating....<p>
+								</div>
+							
+						</div>
+					</ul>
+				</div>
+
 		</div>
 		
 		<div data-role="footer" data-id="foo1" data-position="fixed" data-theme="b">

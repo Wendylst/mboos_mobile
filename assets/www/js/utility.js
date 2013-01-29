@@ -1,45 +1,90 @@
-var serviceURL = "http://192.168.1.103/MBOOS/mobile_ajax/mobile/";
+/* Script for Registration Page*/
+$('#domainPage').live("pageshow", function(event){
 
-var temp_id = null;
+	$('.saveDomainBtn').click(function() {
+		
+		if($('#dName').val().length == 0) {
+			
+			$('#dName').addClass("error").focus();
+			
+		} else {
+		
+		
+			var domain_name = $('#dName').val();
+			
+			$("#savingDomainMsg").popup('open');
+			window.setTimeout(function() {$("#savingDomainMsg").popup('close')}, 1000);
+			
+			
+			window.localStorage.setItem("domain_name", domain_name);
+			window.localStorage.setItem("domain_setup", "1");
+			window.location.href = 'registration.html';
+			
+		}
+	});
+	
+});
 
 $(document).live("pageinit", function(event){
-
-	var value = window.localStorage.getItem("reg_setup");
-   
-	if(value == 1) {
+	
+	setTimeout(function (){
 		
-		categoryPage();
-		searchPage();
+		var domainChecker = window.localStorage.getItem("domain_setup");
+		var regChecker = window.localStorage.getItem("reg_setup");
 		
-		
-		
-	} else {
-		
-		$.mobile.changePage( "registration.html", { transition: "slideup"} );
-		
-	}
+		if(domainChecker == 1) {
+			if(regChecker == 1) {
+	
+				categoryPage();
+				searchPage();
+			
+			} else {
+				
+				$.mobile.changePage( "registration.html", { transition: "slideup"} );
+				
+				}
+		} else {
+        	
+        	$.mobile.changePage( "domain.html", { transition: "slideup"} );
+        	
+        }
+    }, 1000)
 
 
 });
-
 
 $('#detailsPage').live("pageshow", function(event){
 
 	get_info();
 	
     /*Add to Cart Script*/
-    
+	
     $('.addCartBtn').click(function() {
-    	
+    		
+    		var item_availability = parseInt(localStorage.getItem("item_availability"));
+    		var qtyVal = parseInt($('input.qtyForm').val());
+    		
+    		if(qtyVal <= item_availability) {
+    			
+        		//'id'=>'1','name'=>'ian'+'id'=>'2','name'=>'paul'
+            	var item = [$('input.item_id').val() + ","+ $('input.item_name_val').val() + ","+ $('input.item_price_val').val() + ","+ $('input.qtyForm').val() + ""];
+            	
+            	var strItem = item.toString();
+            	var items = strItem.split(",");
+            	
 
-    		//'id'=>'1','name'=>'ian'+'id'=>'2','name'=>'paul'
-        	var item = [$('input.item_id').val() + ","+ $('input.item_name_val').val() + ","+ $('input.item_price_val').val() + ","+ $('input.qtyForm').val() + ""];
-        	
-        	var strItem = item.toString();
-        	var items = strItem.split(",");
-        	
+            	addItem(items[0], items[1], items[2], items[3]);
+            	
+            	$("#popupDialog").popup('open');
+            	
+    		} else {
+    			
+    			$("#aCheckMsg").popup('open');
+    			window.setTimeout(function() {$("#aCheckMsg").popup('close')}, 2000);	
+    			return false;
+    			
+    		}
 
-        	addItem(items[0], items[1], items[2], items[3]);
     		
 	
     });
@@ -49,8 +94,6 @@ $('#detailsPage').live("pageshow", function(event){
 
 /* Script for Registration Page*/
 $('#regPage').live("pageshow", function(event){
-	
-
 
 	$('.saveBtn').click(function() {
 		
@@ -60,6 +103,8 @@ $('#regPage').live("pageshow", function(event){
 			
 		} else {
 		
+			$("#savingInfoMsg").popup('open');
+			window.setTimeout(function() {$("#savingInfoMsg").popup('close')}, 1000);
 		
 			var name = $('#fname').val();
 			var addr = $('#address').val();
@@ -94,6 +139,10 @@ $('#categoryPage').live("pageshow", function(event){
 
 /* function for Category Page */
 function get_cat_info() {
+	
+	var domainName = window.localStorage.getItem("domain_name");
+	
+	var serviceURL = "http://"+ domainName +"/MBOOS/mobile_ajax/mobile/";
 	
 	var id;
 	
@@ -139,6 +188,9 @@ function getUrlVars() {
 /* Get Item Info from Search List*/
 function get_info() {
 	
+	var domainName = window.localStorage.getItem("domain_name");
+	
+	var serviceURL = "http://"+ domainName +"/MBOOS/mobile_ajax/mobile/";
 	
 	var id = getUrlVars()["id"];
 	
@@ -150,14 +202,14 @@ function get_info() {
 			
 			$('label.item_name').append(info.mboos_product_name);
 			$('label.item_price').append("PHP"+info.mboos_product_price);
-			$('p.item_image').append('<img src="http://192.168.1.101/MBOOS/images/item_images/' + info.mboos_product_image + '" height="100" width="100">');
+			$('p.item_image').append('<img src="http://192.168.1.103/MBOOS/images/item_images/' + info.mboos_product_image + '" height="100" width="100">');
 			$('li.item_availability').append(info.mboos_product_availability);
 			$('p.item_desc').append(info.mboos_product_desc);
 			$('input.item_id').val(info.mboos_product_id);
 			$('input.item_name_val').val(info.mboos_product_name);
 			$('input.item_price_val').val(info.mboos_product_price);
 				
-				
+			localStorage.setItem('item_availability', info.mboos_product_availability );	
 			});
 		
 	
@@ -167,6 +219,9 @@ function get_info() {
 
 function categoryPage() {
 	
+	var domainName = window.localStorage.getItem("domain_name");
+	
+	var serviceURL = "http://"+ domainName +"/MBOOS/mobile_ajax/mobile/";
 	
 	$.getJSON(serviceURL + 'get_categories', function(data) {
 		
@@ -186,7 +241,10 @@ function categoryPage() {
 
 function searchPage() {
 	
-
+	var domainName = window.localStorage.getItem("domain_name");
+	
+	var serviceURL = "http://"+ domainName +"/MBOOS/mobile_ajax/mobile/";
+	
 	$.getJSON(serviceURL + 'search', function(data) {
 	$('#search_data li').remove();
 	products = data.products;
@@ -225,14 +283,23 @@ $('#cartPage').live("pageshow", function(event){
 
 	setupDB();
 	
+	$('.cartRefreshBtn').click(function() {
+		
+		setupDB();
+		
+		$("#refreshingMsg").popup('open');
+		window.setTimeout(function() {$("#refreshingMsg").popup('close')}, 1000);
+		
+	});
+	
 	$('.checkoutBtn').click(function() {
 		
 		var cart_items = localStorage.getItem("cart_items")
 		
 		if(cart_items == 0) {
 			
-			$("#checkoutMsg").popup('open');
-			window.setTimeout(function() {$("#checkoutMsg").popup('close')}, 1000);
+			$("#cartCheckerMsg").popup('open');
+			window.setTimeout(function() {$("#cartCheckerMsg").popup('close')}, 1000);
 			return false;	
 			
 		} else {
@@ -243,6 +310,8 @@ $('#cartPage').live("pageshow", function(event){
 	});
 	
 });
+
+
 
 $('#checkoutPage').live("pageshow", function(event) {
 	
@@ -294,6 +363,9 @@ $('#profilePage').live("pageshow", function(event) {
 	var cEmail = cInfo.email;
 	var cNumber = cInfo.number;
 	
+	var getCurrDomain = window.localStorage.getItem("domain_name");
+	$('#dName').val(getCurrDomain);
+	
 	$('#cName').val(cName);
 	$('#address').val(cAddr);
 	$('#email').val(cEmail);
@@ -315,7 +387,19 @@ $('#profilePage').live("pageshow", function(event) {
 		
 		// store the custInfo
 		localStorage.setItem('customer_info', JSON.stringify(custInfo));
+		window.setTimeout(function() {$("#popupInfo").popup('close')}, 1000);	
+	});
+	
+	$('.updatingDomainBtn').click(function() { 
 		
+		var getCurrDomain = window.localStorage.getItem("domain_name");
+		
+		var domain_name = $('#dName').val();
+		
+		window.localStorage.setItem("domain_name", domain_name);
+		
+		$("#updatingDomainMsg").popup('open');
+		window.setTimeout(function() {$("#updatingDomainMsg").popup('close')}, 1000);
 	});
 });
 
@@ -392,6 +476,9 @@ function querySuccess(tx, results) {
 	// var for checking the Cart
 	localStorage.setItem('cart_items', len);
 	
+	$("#numItems").empty().append(len);
+	$('#cart_data').empty();
+	
 	for (var i=0; i<len; i++){
 		
 			$('#cart_data').append('<li><a class="cart_edit_item" href="cart_edit_item.html?id=' + results.rows.item(i).id + '">' +
@@ -399,6 +486,7 @@ function querySuccess(tx, results) {
 							'<p>PHP ' + results.rows.item(i).item_price + '</p>' +
 							'<a class="deleteBtn" href="item_delete.html?id=' + results.rows.item(i).id + '" data-role="button" data-icon="delete" data-iconpos="notext">Delete</a> ' +
 							'</a><span class="ui-li-count">'+ results.rows.item(i).item_qty +'</span></li>'); 
+			
 			$("#cart_data").listview("refresh");
 			
 	    }
@@ -410,7 +498,7 @@ function querySubTotalSuccess(tx, results) {
 	
 	if(results.rows.item(0).itemSubtotal == null) {
 		
-		$('#subtotalVal').empty().append("PHP 0");
+		$('#subtotalVal').empty().append("PHP 0.00");
 		
 	} else {
 		
@@ -504,7 +592,46 @@ $('#editPage').live("pageshow", function(event){
 	
 	id = getUrlVars()["id"];
 	
+	$.getJSON(serviceURL + 'get_info?id='+id, function(data) {
+		
+	item_info = data.item_info;
+	
+		$.each(item_info, function(index, info) {
+				
+			localStorage.setItem('temp_itemQty', info.mboos_product_availability );	
+			});
+		
+	
+	});
+	
 	select_table(id);
+	
+	$('.saveBtn').click(function() {
+	    	
+	    	var tempItem_availability = parseInt(localStorage.getItem("temp_itemQty"));
+	    	var qtyVal = parseInt($('input.qtyForm').val());
+	    	
+	    	if(qtyVal <= tempItem_availability) {
+	    		
+	        	var name = $('.item_name_val').val();
+	        	var price = $('.item_price_val').val();
+	        	var qty = $('.qtyForm').val();
+	        	var cart_id = $('.cart_id').val();
+	        	var item_id = $('.item_id').val();
+	        	var total_price = qty * price;
+	        	
+	        	update_table(cart_id,qty, total_price);
+
+	        	
+	    	} else {
+	    		
+	    		$("#cartEditMsg").popup('open');
+	    		window.setTimeout(function() {$("#cartEditMsg").popup('close')}, 2000);	
+	    		return false;
+	    		
+	    	}
+		
+	    });
 	
 });
 
@@ -525,35 +652,16 @@ function selected_query(tx, results) {
 	
 	for (var i=0; i<len; i++){
 		
-		
 		$('.item_name').append(results.rows.item(i).item_name);
 		$('.item_price').append(results.rows.item(i).item_price);
 		$('.qtyForm').val(results.rows.item(i).item_qty);
 		$('.cart_id').val(results.rows.item(i).id);
-		
 		$('.item_id').val(results.rows.item(i).item_id);
 		$('.item_name_val').val(results.rows.item(i).item_name);	
 		$('.item_price_val').val(results.rows.item(i).item_price);	
 	    }  
 }
 
-$('#editPage').live("pageshow", function(event){
-
-    $('.saveBtn').click(function() {
-    	
-    	var name = $('.item_name_val').val();
-    	var price = $('.item_price_val').val();
-    	var qty = $('.qtyForm').val();
-    	var cart_id = $('.cart_id').val();
-    	var item_id = $('.item_id').val();
-    	var total_price = qty * price;
-    	
-    	update_table(cart_id,qty, total_price);
-	
-    });
-   
-	
-});
 
 function update_table(id, qty, ttl_price) {
 	

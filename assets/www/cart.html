@@ -15,18 +15,26 @@
 <div id="cartPage" data-role="page">
 		<div data-role="header" data-position="fixed" data-theme="b">
 			<div class="ui-btn-left" data-role="controlgroup" data-type="horizontal">
-            <a class="searchhBtn" href="search.html" data-role="button" data-icon="search" >Search</a>
+            	<a class="searchhBtn" href="search.html" data-role="button" data-icon="search" >Search</a>
         	</div>
-			<h1>CART</h1>
+				<h1>CART</h1>
 			<div class="ui-btn-right" data-role="controlgroup" data-type="horizontal">
-            <a class="checkoutBtn" href="checkout.html" data-role="button" >Checkout</a>
-        </div>
+				<a class="cartRefreshBtn" href="#" data-role="button" data-icon="refresh" data-iconpos="notext">Refresh</a>
+            	<a class="checkoutBtn" href="checkout.html" data-role="button" >Checkout</a>
+        	</div>
 		</div><!-- /header -->
-		<div data-role="popup" id="checkoutMsg">
-			<p>Cart is Empty<p>
+		<div data-role="popup" id="cartCheckerMsg">
+				<p class="cartMsg">Cart is Empty.<p>
+		</div>
+		<div data-role="popup" id="aCheckerMsg">
+				<p class="availabilityMsg">The Quantity you entered exceeded the available items.<p>
+		</div>
+		<div data-role="popup" id="refreshingMsg">
+			<p>Refresh...<p>
 		</div>
 		<div id="center_box" data-role="content">
 			<div id="subTotalBox">
+				<p class="numItem" ><label>Items: </label><span id="numItems">0</span></p>
 				<p class="subTotal_label"><label id="cartSubtotal">Subtotal: </label><span id="subtotalVal"></span></p>
 				<p class="item_qty_label">Qty</p>
 			</div>	 
