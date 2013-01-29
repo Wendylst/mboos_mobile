@@ -3,24 +3,27 @@ $('#domainPage').live("pageshow", function(event){
 
 	$('.saveDomainBtn').click(function() {
 		
-		if($('#dName').val().length == 0) {
+		setTimeout(function (){
 			
-			$('#dName').addClass("error").focus();
 			
-		} else {
+			if($('.dName').val().length == 0) {
+
+					$('.dName').addClass("error").focus();
 		
-		
-			var domain_name = $('#dName').val();
-			
-			$("#savingDomainMsg").popup('open');
-			window.setTimeout(function() {$("#savingDomainMsg").popup('close')}, 1000);
-			
-			
-			window.localStorage.setItem("domain_name", domain_name);
-			window.localStorage.setItem("domain_setup", "1");
-			window.location.href = 'registration.html';
-			
-		}
+			} else {
+	        	
+	        		var domain_name = $('.dName').val();
+				
+				$("#savingDomainMsg").popup('open');
+				window.setTimeout(function() {$("#savingDomainMsg").popup('close')}, 1000);
+				
+				
+				window.localStorage.setItem("domain_name", domain_name);
+				window.localStorage.setItem("domain_setup", "1");
+				window.location.href = 'registration.html';
+	        	
+	        }
+	    }, 1000)
 	});
 	
 });
