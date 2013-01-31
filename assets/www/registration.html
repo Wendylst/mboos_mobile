@@ -14,20 +14,30 @@
 <body>
 <div id="regPage" data-role="page">
 		<div data-role="header" data-position="fixed" data-theme="b" >
-			<h1>Information</h1>
+			<div class="ui-btn-left" data-role="controlgroup" data-type="horizontal">
+            <a class="loginBtn" href="login.html" data-role="button" >Log in</a>
+        	</div>
+			<h1>Sign up</h1>
 		</div><!-- /header -->
 		
 		<div id="regContent" data-role="content">	
 			
-				<p><label for="fname" >Complete Name *</label><input  id="fname" name="fname" type="text" class="required"/></p>
-				<p><label for="address">Address </label><input  id="address" name="address" type="text" class="required" /></p>
-				<p><label for="email">Email Address </label><input  id="email" name="email" type="text" class="required" /></p>
-				<p><label for="cNumber">Cellphone Number</label><input  id="cNumber" name="cNumber"  type="number" class="required"/></p>
-				<p><input class="saveBtn" type="submit" value="Save" data-theme="b"/></p>
+				<p><label for="fname" >Complete Name *</label><input  class="fname" name="fname" type="text" /></p>
+				<p><label for="email">Email Address* </label><input  class="email" name="email" type="text"  /></p>
+				<p><label for="email">Password* </label><input  class="password" name="password" type="password"  /></p>
+				<p><label for="address">Address* </label><input  class="address" name="address" type="text"  /></p>
+				<p><label for="cNumber">Cellphone Number*</label><input  class="cNumber" name="cNumber"  type="number" /></p>
+				<p><input class="regBtn" type="submit" value="Save" data-theme="b"/></p>
 			
 		</div>
 		<div data-role="popup" id="savingInfoMsg">
-				<p class="cartMsg">Saving...<p>
+				<p class="regMsg">Saving...<p>
+		</div>
+		<div data-role="popup" id="emailExistMsg">
+				<p class="regMsg">Invalid Email Address<p>
+		</div>
+		<div data-role="popup" id="emailRequired">
+				<p class="regMsg">Email Address is required<p>
 		</div>
 </div><!-- /page -->
 </body>

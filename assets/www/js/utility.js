@@ -1,8 +1,6 @@
 /* Script for Registration Page*/
 $('#domainPage').live("pageshow", function(event){
 	
-	createDB();
-	
 	$('.saveDomainBtn').click(function() {
 		
 		setTimeout(function (){
@@ -22,10 +20,121 @@ $('#domainPage').live("pageshow", function(event){
 				
 				window.localStorage.setItem("domain_name", domain_name);
 				window.localStorage.setItem("domain_setup", "1");
-				window.location.href = 'registration.html';
+				window.location.href = 'login.html';
 	        	
 	        }
 	    }, 3000)
+	});
+	
+});
+
+/* Script for login Page*/
+$('#loginPage').live("pageshow", function(event){
+	
+	var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
+	var domainName = window.localStorage.getItem("domain_name");
+	var serviceURL = "http://"+ domainName +"/MBOOS/mobile_ajax/login/";
+	
+	$('.email').change(function() {
+		
+		$(this).removeClass("error");
+		
+	});
+	
+	$('.password').change(function() {
+		
+		$(this).removeClass("error");
+		
+	});
+	
+	
+	$('.loginBtn').click(function() {
+		
+		if($('.email').val().length == 0 ) {
+			
+			$('.email').addClass("error");
+			
+			$("#requiredEmail").popup('open');
+			window.setTimeout(function() {$("#requiredEmail").popup('close')}, 3000);
+			
+			
+		} else if(!$('.email').val().match(emailExp)) {
+			
+			$('.email').addClass("error");
+			$("#invalidEmail").popup('open');
+			window.setTimeout(function() {$("#invalidEmail").popup('close')}, 3000);
+			
+		} else if ($('.password').val().length == 0) {
+			
+			$('.password').addClass("error");
+			$("#requiredPassword").popup('open');
+			window.setTimeout(function() {$("#requiredPassword").popup('close')}, 3000);
+			
+		} else {
+			
+			$('.email').removeClass("error");
+			$('.password').removeClass("error");
+			
+			$.ajax({
+				url			:	serviceURL,	
+				type		: 	"post",
+				data		:	{email: $('.email').val(), pword: $('.password').val() },
+				success		: 	function(data) {
+					
+									//alert(data);
+									if(data == "1") {
+										
+					        			
+										$.mobile.changePage( "index.html", { transition: "slideup"} );
+										$("#loginInfoMsg").popup('open');
+										
+										window.localStorage.setItem("is_logged_in", "1");
+										window.localStorage.setItem("user_email", $('.email').val());
+										
+					        			window.setTimeout(function() {$("#loginErrorMsg").popup('close')}, 1000);
+										
+										
+									} else {
+										
+										$("#loginErrorMsg").popup('open');
+					        			window.setTimeout(function() {$("#loginErrorMsg").popup('close')}, 3000);
+										
+									}
+									
+
+									
+								}
+			});
+			
+		}
+		
+		
+	});
+	
+});
+
+/* Script for Home Page Page*/
+$('#homePage').live("pageshow", function(event){
+	
+	var is_logged_id = window.localStorage.getItem("is_logged_in");
+
+	if(is_logged_id == 1) {
+		
+		categoryPage();
+		searchPage();
+	
+	} else {
+		
+		$.mobile.changePage( "login.html", { transition: "slideup"} );
+		
+		}
+	
+	$('.signoutBtn').click(function() {
+		
+		
+		window.localStorage.removeItem("is_logged_in");
+		$.mobile.changePage( "login.html", { transition: "slideup"} );
+		
 	});
 	
 });
@@ -35,19 +144,12 @@ $(document).live("pageinit", function(event){
 	setTimeout(function (){
 		
 		var domainChecker = window.localStorage.getItem("domain_setup");
-		var regChecker = window.localStorage.getItem("reg_setup");
 		
 		if(domainChecker == 1) {
-			if(regChecker == 1) {
-	
-				categoryPage();
-				searchPage();
 			
-			} else {
-				
-				$.mobile.changePage( "registration.html", { transition: "slideup"} );
-				
-				}
+			categoryPage();
+			searchPage();
+			
 		} else {
         	
         	$.mobile.changePage( "domain.html", { transition: "slideup"} );
@@ -57,6 +159,7 @@ $(document).live("pageinit", function(event){
 
 
 });
+
 
 $('#detailsPage').live("pageshow", function(event){
 
@@ -74,13 +177,15 @@ $('#detailsPage').live("pageshow", function(event){
     		if($('input.qtyForm').val().match(regInt)) {
     			
     			if(qtyVal <= item_availability) {
-        		//'id'=>'1','name'=>'ian'+'id'=>'2','name'=>'paul'
+    				
+        		//'id'=>'1','name'=>'ian','item_id'=>'0001','qty'=>'5','price'=>'100.00' ||'id'=>'2','name'=>'paul','item_id'=>'0002','qty'=>'3','price'=>'10.00'
+    				
             	var item = [$('input.item_id').val() + ","+ $('input.item_name_val').val() + ","+ $('input.item_price_val').val() + ","+ $('input.qtyForm').val() + ""];
             	
             	var strItem = item.toString();
             	var items = strItem.split(",");
             	
-
+            	setupDB();
             	addItem(items[0], items[1], items[2], items[3]);
             	
             	$("#popupDialog").popup('open');
@@ -110,36 +215,91 @@ $('#detailsPage').live("pageshow", function(event){
 
 /* Script for Registration Page*/
 $('#regPage').live("pageshow", function(event){
+	
+	//var domainName = window.localStorage.getItem("domain_name");
+	var domainName = "192.168.1.103";
+	
+	var serviceURL = "http://"+ domainName +"/MBOOS/mobile_ajax/register/";
+	
+	var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
 
-	$('.saveBtn').click(function() {
+	$('.regBtn').click(function() {
 		
-		if($('#fname').val().length == 0) {
+		
+		
+		if($('.fname').val().length == 0) {
 			
-			$('#fname').addClass("error").focus();
+			$('.fname').addClass("error").focus();
+			
+		} else if($('.email').val().length == 0 ) {
+			
+			$('.fname').removeClass("error");
+			$('.email').addClass("error").focus();
+			
+			$("#emailRequired").popup('open');
+			window.setTimeout(function() {$("#emailRequired").popup('close')}, 3000);
+			
+		} else if(!$('.email').val().match(emailExp)) {
+			
+			$('.fname').removeClass("error");
+			$('.email').addClass("error").focus();
+			
+			$("#emailExistMsg").popup('open');
+			window.setTimeout(function() {$("#emailExistMsg").popup('close')}, 3000);
+			
+		} else if($('.password').val().length == 0) {
+			
+			$('.email').removeClass("error");
+			$('.password').addClass("error").focus();
+			
+		} else if($('.address').val().length == 0) {
+			
+			$('.password').removeClass("error");
+			$('.address').addClass("error").focus();
+			
+		} else if($('.cNumber').val().length == 0) {
+			
+			$('.address').removeClass("error");
+			$('.cNumber').addClass("error").focus();
 			
 		} else {
 		
 			$("#savingInfoMsg").popup('open');
 			window.setTimeout(function() {$("#savingInfoMsg").popup('close')}, 3000);
 		
-			var name = $('#fname').val();
-			var addr = $('#address').val();
-			var email = $('#email').val();
-			var number = $('#cNumber').val();
+			var name = $('.fname').val();
+			var addr = $('.address').val();
+			var email = $('.email').val();
+			var number = $('.cNumber').val();
+			var password = $('.password').val();
 			
-		
-			var custInfo = {
-		            "name": name,
-		            "addr": addr,
-		            "email": email,
-		            "number": number,
-		        };
 			
-			// store the custInfo
-			localStorage.setItem('customer_info', JSON.stringify(custInfo));
 			
-			window.localStorage.setItem("reg_setup", "1");
-			window.location.href = 'index.html';
+					
+			
+			var request = $.ajax({
+				
+					url: serviceURL,
+					type: "POST",
+					data: { cname: name, address: addr, email: email, cpnumber: number, pword: password },
+					dataType: "html"
+						
+			});
+			
+			request.done(function(msg) {
+					
+					window.location.href = 'login.html';
+					
+			});
+				
+			request.fail(function(jqXHR, textStatus) {
+				
+					alert( "Request failed: " + textStatus );
+					
+			});
+			
+			
+
 			
 		}
 	});
@@ -332,79 +492,112 @@ $('#cartPage').live("pageshow", function(event){
 
 $('#checkoutPage').live("pageshow", function(event) {
 	
-	var cInfo = JSON.parse(localStorage.getItem("customer_info"));
-	var Name = cInfo.name;
+	var cart_items = localStorage.getItem("cart_items")
 	
-	
-	$('.paypalBtn').click(function() {
+	if(cart_items == 0) {
 		
-		var username = $('#username').val();
-		var pword = $('#password').val();
-		var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
-		if(username == "") { 
-			
-			$("#uValidationMsg").popup('open');
-			window.setTimeout(function() {$("#uValidationMsg").popup('close')}, 2000);
-			return false;
-			
-		} else if(!username.match(emailExp)) {
-			
-			$("#eValidationMsg").popup('open');
-			window.setTimeout(function() {$("#eValidationMsg").popup('close')}, 2000);
-			return false;
-			
-			
-		} else if(pword == "") {
-			
-			$("#pValidationMsg").popup('open');
-			window.setTimeout(function() {$("#pValidationMsg").popup('close')}, 2000);
-			return false;
-			
-		} else {
-			
-			return true;
-			
-		}
+		$.mobile.changePage( "index.html", { transition: "slideup"} );
 		
-	});
-	query_cart();
+	} else {
+		
+		
+		$('.paypalBtn').click(function() {
+			
+			var username = $('#username').val();
+			var pword = $('#password').val();
+			var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
+			if(username == "") { 
+				
+				$("#uValidationMsg").popup('open');
+				window.setTimeout(function() {$("#uValidationMsg").popup('close')}, 3000);
+				return false;
+				
+			} else if(!username.match(emailExp)) {
+				
+				$("#eValidationMsg").popup('open');
+				window.setTimeout(function() {$("#eValidationMsg").popup('close')}, 3000);
+				return false;
+				
+				
+			} else {
+				
+				return true;
+				
+			}
+			
+		});
+		query_cart();
+		
+		
+	}
+
 	
 	
 });
 
 $('#profilePage').live("pageshow", function(event) {
 	
-	var cInfo = JSON.parse(localStorage.getItem("customer_info"));
-	var cName = cInfo.name;
-	var cAddr = cInfo.addr;
-	var cEmail = cInfo.email;
-	var cNumber = cInfo.number;
-	
+	var currUser = window.localStorage.getItem("user_email");
 	var getCurrDomain = window.localStorage.getItem("domain_name");
 	$('#dName').val(getCurrDomain);
 	
-	$('#cName').val(cName);
-	$('#address').val(cAddr);
-	$('#email').val(cEmail);
-	$('#cNumber').val(cNumber);
+	
+	
+	var serviceURL = "http://"+ getCurrDomain +"/MBOOS/mobile_ajax/customer/";
+	
+	$.getJSON(serviceURL + 'customer_info?email='+currUser, function(data) {
+	
+		cust_info = data.customer_info;
+	
+		$.each(cust_info, function(index, info) {
+			
+			
+			$('#cName').val(info.mboos_customer_complete_name);
+			$('#address').val(info.mboos_customer_addr);
+			$('#email').val(info.mboos_customer_email);
+			$('#cNumber').val(info.mboos_customer_phone);
+			$('.cust_id').val(info.mboos_customer_id);
+			
+		});
+
+	});
+
 	
 	$('.profileSaveBtn').click(function() {
 		
-		var name = $('#cName').val();
+		var customer_id = $('.cust_id').val();
+		var cname = $('#cName').val();
 		var addr = $('#address').val();
 		var email = $('#email').val();
-		var number = $('#cNumber').val();
+		var cnumber = $('#cNumber').val();
 		
-		var custInfo = {
-	            "name": name,
-	            "addr": addr,
-	            "email": email,
-	            "number": number,
-	        };
 		
-		// store the custInfo
-		localStorage.setItem('customer_info', JSON.stringify(custInfo));
-		window.setTimeout(function() {$("#popupInfo").popup('close')}, 2000);	
+		var request = $.ajax({
+			
+				url: serviceURL + "customer_edit",
+				type: "POST",
+				data: {cust_id : customer_id, name : cname, address : addr, email : email, number : cnumber },
+				dataType: "html"
+				
+			});
+		
+			request.done(function(msg) {
+				
+				$("#popupInfo").popup('open');
+				window.setTimeout(function() {$("#popupInfo").popup('close')}, 3000);
+			
+			});
+			
+			request.fail(function(jqXHR, textStatus) {
+				
+				$("#enableToUpdateMsg").popup('open');
+				window.setTimeout(function() {$("#enableToUpdateMsg").popup('close')}, 3000);
+				
+				
+			});
+		
+
+		
 	});
 	
 	$('.updatingDomainBtn').click(function() { 
@@ -424,8 +617,10 @@ $('#confirmationPage').live("pageshow", function(event) {
 	
 	emptyDB();
 	var datas = localStorage.getItem("all_items");
-	alert(datas);
-
+	var subtotal = window.localStorage.getItem("subtotal");
+	
+	window.plugins.childBrowser.showWebPage('http://192.168.1.103/MBOOS/paypal/paypal?stringOrder='+ datas +'', { showLocationBar: true });	
+		
 });
 
 function query_cart() {
@@ -445,7 +640,7 @@ var item_lists = [];
 
 	for (var i=0; i<len; i++){
 		
-		order = ["+'id' => '" + results.rows.item(i).item_id + "'", "'name' => '"+ results.rows.item(i).item_name  +"'", "'price' => '"+ results.rows.item(i).item_price +"'", "'qty' => '" + results.rows.item(i).item_qty + "'"]
+		order = ["||'item_id' => '" + results.rows.item(i).item_id + "'", "'name' => '"+ results.rows.item(i).item_name  +"'", "'price' => '"+ results.rows.item(i).item_price +"'", "'qty' => '" + results.rows.item(i).item_qty + "'"]
 		
 		item_lists.push(order);			
 	
@@ -521,6 +716,9 @@ function querySubTotalSuccess(tx, results) {
 		
 		var num = results.rows.item(0).itemSubtotal;
 		var result = Math.round(num*100)/100;
+		
+		// saving the subtotal
+		localStorage.setItem('subtotal', result);
 		
 		$('#subtotalVal').empty().append("PHP " + result + "");
 	}
@@ -713,4 +911,3 @@ function update_table(id, qty, ttl_price) {
 	
 	}, dbErrorHandler);
 }
-

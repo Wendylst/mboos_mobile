@@ -20,8 +20,10 @@ div#subTotalBox p { margin: 5px 0 5px 0; }
 .subTotal_label { float:left; }
 .item_qty_label { float: right; width:78px; }
 
-#regContent input.error { border-color:red; }
+#regPage input.error { border-color:red; }
 #domainPage input.error { border-color:red; }
+#loginPage input.error { border-color:red; }
+
 
 #dialog_info input.error { border-color:red; }
 #paypalBox input.error { border-color:red; }

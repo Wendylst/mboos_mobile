@@ -1,0 +1,49 @@
+<!DOCTYPE html> 
+<html> 
+	<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">  
+    <script src="js/cordova-1.9.0.js"></script>
+    <link rel="stylesheet" href="css/style.css" /> 	
+	<link rel="stylesheet" href="css/jquery.mobile-1.2.0.css" />
+	<script src="js/jquery.js"></script>
+	<script src="js/utility.js"></script>
+   	<script src="js/jquery.mobile-1.2.0.js"></script>
+   	
+</head> 
+<body>
+<div id="loginPage" data-role="page">
+		<div data-role="header" data-position="fixed" data-theme="b" >
+			<h1>Log in</h1>
+			<div class="ui-btn-right" data-role="controlgroup" data-type="horizontal">
+            	<a href="registration.html" data-role="button" >Sign Up</a>
+        	</div>
+		</div><!-- /header -->
+		
+		<div id="loginContent" data-role="content">	
+			
+				<p><label for="email">Email Address* </label><input  class="email" name="email" type="text"  /></p>
+				<p><label for="password">Password* </label><input  class="password" name="password" type="password"  /></p>
+				
+				<input class="loginBtn" type="submit" value="Log In" data-inline="true"/>
+				<input class="signupBtn" type="submit" value="Forgot Password"  data-inline="true"/>
+			
+		</div>
+		<div data-role="popup" id="loginInfoMsg">
+				<p class="cartMsg">log in...<p>
+		</div>
+		<div data-role="popup" id="loginErrorMsg">
+				<p class="cartMsg">Account does not exist!<p>
+		</div>
+		<div data-role="popup" id="invalidEmail">
+				<p class="cartMsg">Invalid Email Address<p>
+		</div>
+		<div data-role="popup" id="requiredEmail">
+				<p class="cartMsg">Email is Required<p>
+		</div>
+		<div data-role="popup" id="requiredPassword">
+				<p class="cartMsg">Password is Required<p>
+		</div>
+</div><!-- /page -->
+</body>
+</html>

@@ -26,8 +26,8 @@
 					<h2>Profile</h2>
 					<ul data-role="listview" data-filter-theme="c" data-divider-theme="d">
 						<div id="profileContent" data-role="content">	
-						
-							<p><label for="cName" >Complete Name</label><input id="cName" name="came" type="text" class="required"/></p>
+							<p><input class="cust_id" name="cust_id" type="hidden"/>
+							<p><label for="cName" >Complete Name</label><input id="cName" name="name" type="text" class="required"/></p>
 							<p><label for="address">Address</label><input id="address" name="address" type="text" class="required" /></p>
 							<p><label for="email">Email Address</label><input id="email" name="email" type="text" class="required" /></p>
 							<p><label for="cNumber">Cellphone Number</label><input id="cNumber" name="cNumber"  type="number" class="required"/></p>
@@ -37,6 +37,9 @@
 						<div data-role="popup" id="popupInfo" class="ui-content" data-theme="e" style="max-width:350px;">
 				          <p>Successfully Updated.</p>
 						</div>
+						<div data-role="popup" id="enableToUpdateMsg">
+						<p class="cartMsg">Saving Failed!<p>
+					</div>
 					</ul>
 				</div>
 				<div data-role="collapsible">
