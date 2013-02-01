@@ -22,14 +22,17 @@
 		<div data-role="popup" id="uValidationMsg">
 			<p>Email Address is required<p>
 		</div>
-		<div data-role="popup" id="eValidationMsg">
+		<div data-role="popup" id="invalidPaylpalEmail">
 			<p>Invalid Email Address<p>
 		</div>
 		<div id="paypalBox" data-role="content">	
 			<div data-role="fieldcontain" class="ui-hide-label">
 				<p>Sign in to PayPal</p>
-				<p><label for="username">Email Address:</label><input type="text" name="username" id="username" value="" placeholder="Email Address"/></p>	
-				<p><a class="paypalBtn" href="confirmation.html" data-theme="b" data-role="button">Pay via Paypal</a></p>
+				<input type="text" name="username" id="paypal_email" value="" placeholder="Email Address"/>
+				<div data-role="controlgroup" data-type="horizontal">
+				<a class="reviewBtn" href="cart.html" data-role="button" data-inline="true">Review Cart</a>
+				<a class="paypalBtn" href="confirmation.html" data-theme="b" data-role="button">Pay via Paypal</a>
+				</div>
 			</div>
 		</div>
 		

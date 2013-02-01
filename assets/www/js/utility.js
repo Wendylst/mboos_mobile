@@ -216,13 +216,69 @@ $('#detailsPage').live("pageshow", function(event){
 /* Script for Registration Page*/
 $('#regPage').live("pageshow", function(event){
 	
-	//var domainName = window.localStorage.getItem("domain_name");
-	var domainName = "192.168.1.103";
+	var domainName = window.localStorage.getItem("domain_name");
+	
 	
 	var serviceURL = "http://"+ domainName +"/MBOOS/mobile_ajax/register/";
 	
 	var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
+	var strongPword =  /(?!^[0-9]*$)(?!^[a-zA-Z!@#$%^&*()_+=<>?]*$)^([a-zA-Z!@#$%^&*()_+=<>?0-9]{6,15})$/;
+	var onlyNumber = /^[0-9]+$/;
+	
+	$('.fname').change(function() {
+		
+		$('.fname').removeClass("error");
+		
+	});
+	
+	$('.password').change(function() {
+		
+		$('.password').removeClass("error");
+		
+	});
+	
+	$('.address').change(function() {
+		
+		$('.address').removeClass("error");
+		
+	});
+	
+	$('.cNumber').change(function() {
+		
+		$('.cNumber').removeClass("error");
+		
+	});
+	
+	
+	$('.email').change(function() {
+		
+		
+		$.ajax({
+			url			:	serviceURL + "email_checker",	
+			type		: 	"post",
+			data		:	{email: $('.email').val() },
+			success		: 	function(data) {
+				
+								if(data == "1") {					
+									
+									$("#emailChecker").popup('open');
+									window.setTimeout(function() {$("#emailChecker").popup('close')}, 3000);
+									$('.email').addClass("error").focus();
+								} else {
+									
+									$('.email').removeClass("error");
+									
+								}
+								
 
+								
+							}
+		});
+		
+		
+	});
+	
+	
 	$('.regBtn').click(function() {
 		
 		
@@ -252,12 +308,29 @@ $('#regPage').live("pageshow", function(event){
 			$('.email').removeClass("error");
 			$('.password').addClass("error").focus();
 			
+		} else if(!$('.password').val().match(strongPword)) {
+			
+			$("#passwordTipsMsg").popup('open');
+			window.setTimeout(function() {$("#passwordTipsMsg").popup('close')}, 3000);
+			
+			$('.email').removeClass("error");
+			$('.password').addClass("error").focus();
+			
 		} else if($('.address').val().length == 0) {
 			
 			$('.password').removeClass("error");
 			$('.address').addClass("error").focus();
 			
 		} else if($('.cNumber').val().length == 0) {
+			
+			$('.address').removeClass("error");
+			$('.cNumber').addClass("error").focus();
+			
+		} else if(!$('.cNumber').val().match(onlyNumber)) {
+			
+			$("#invalidNumber").popup('open');
+			window.setTimeout(function() {$("#invalidNumber").popup('close')}, 3000);
+			
 			
 			$('.address').removeClass("error");
 			$('.cNumber').addClass("error").focus();
@@ -271,11 +344,7 @@ $('#regPage').live("pageshow", function(event){
 			var addr = $('.address').val();
 			var email = $('.email').val();
 			var number = $('.cNumber').val();
-			var password = $('.password').val();
-			
-			
-			
-					
+			var password = $('.password').val();	
 			
 			var request = $.ajax({
 				
@@ -294,7 +363,8 @@ $('#regPage').live("pageshow", function(event){
 				
 			request.fail(function(jqXHR, textStatus) {
 				
-					alert( "Request failed: " + textStatus );
+				$("#regUnsuccessfulMsg").popup('open');
+				window.setTimeout(function() {$("#regUnsuccessfulMsg").popup('close')}, 3000);
 					
 			});
 			
@@ -503,8 +573,10 @@ $('#checkoutPage').live("pageshow", function(event) {
 		
 		$('.paypalBtn').click(function() {
 			
-			var username = $('#username').val();
-			var pword = $('#password').val();
+			var username = $('#paypal_email').val();
+			
+			window.localStorage.setItem("paypal_email", username);
+			
 			var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
 			if(username == "") { 
 				
@@ -514,8 +586,8 @@ $('#checkoutPage').live("pageshow", function(event) {
 				
 			} else if(!username.match(emailExp)) {
 				
-				$("#eValidationMsg").popup('open');
-				window.setTimeout(function() {$("#eValidationMsg").popup('close')}, 3000);
+				$("#invalidPaylpalEmail").popup('open');
+				window.setTimeout(function() {$("#invalidPaylpalEmail").popup('close')}, 3000);
 				return false;
 				
 				
@@ -561,6 +633,21 @@ $('#profilePage').live("pageshow", function(event) {
 		});
 
 	});
+	
+	$.getJSON(serviceURL + 'customer_order_summary?currEmail='+currUser, function(data) {
+		
+		summaries = data.orders_summary;
+		
+			$.each(summaries, function(index, summary) {
+				
+				$('#order_summary').append('<li>Order Number : 000'+ summary.mboos_order_id +'</li>');
+				
+			});
+			
+			$('#order_summary').listview('refresh');
+		});
+	
+	
 
 	
 	$('.profileSaveBtn').click(function() {
@@ -616,10 +703,29 @@ $('#profilePage').live("pageshow", function(event) {
 $('#confirmationPage').live("pageshow", function(event) {
 	
 	emptyDB();
+	
+	var getCurrDomain = window.localStorage.getItem("domain_name");
+	var getPaypalEmail = window.localStorage.getItem("paypal_email");
+	var serviceURL = "http://"+ getCurrDomain +"/MBOOS/mobile_ajax/customer/";
 	var datas = localStorage.getItem("all_items");
 	var subtotal = window.localStorage.getItem("subtotal");
+	var user_email = window.localStorage.getItem("user_email");
 	
-	window.plugins.childBrowser.showWebPage('http://192.168.1.103/MBOOS/paypal/paypal?stringOrder='+ datas +'', { showLocationBar: true });	
+	$.getJSON(serviceURL + 'customer_info?email='+user_email, function(data) {
+		
+		cust_info = data.customer_info;
+	
+		$.each(cust_info, function(index, info) {
+			
+			//'id'=>'1','name'=>'ian','item_id'=>'0001','qty'=>'5','price'=>'100.00' ||'id'=>'2','name'=>'paul','item_id'=>'0002','qty'=>'3','price'=>'10.00'&subtotal=100.00&cust_id=1&paypal=ian_kionisala@yahoo.com
+			window.plugins.childBrowser.showWebPage('http://'+ getCurrDomain +'/MBOOS/paypal/paypal?stringOrder='+ datas +'&subtotal='+ subtotal +'&cust_id='+ info.mboos_customer_id +'&paypal_email='+ getPaypalEmail +'', { showLocationBar: true });
+			
+		});
+
+	});
+	
+	
+		
 		
 });
 

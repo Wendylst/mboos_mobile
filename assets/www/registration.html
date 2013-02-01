@@ -9,6 +9,7 @@
 	<script src="js/jquery.js"></script>
 	<script src="js/utility.js"></script>
    	<script src="js/jquery.mobile-1.2.0.js"></script>
+   	<script type="text/javascript" charset="utf-8" src="js/childbrowser.js"></script>
    	
 </head> 
 <body>
@@ -21,7 +22,7 @@
 		</div><!-- /header -->
 		
 		<div id="regContent" data-role="content">	
-			
+				<p class="requiredMsg">* Required</p>
 				<p><label for="fname" >Complete Name *</label><input  class="fname" name="fname" type="text" /></p>
 				<p><label for="email">Email Address* </label><input  class="email" name="email" type="text"  /></p>
 				<p><label for="email">Password* </label><input  class="password" name="password" type="password"  /></p>
@@ -38,6 +39,19 @@
 		</div>
 		<div data-role="popup" id="emailRequired">
 				<p class="regMsg">Email Address is required<p>
+		</div>
+		<div data-role="popup" id="emailChecker">
+				<p class="regMsg">Email address is already taken<p>
+		</div>
+		<div data-role="popup" id="passwordTipsMsg">
+				<p class="regMsg">Password must contains a number and an alphabet and should be more than 6 characters long <p>
+		</div>
+		<div data-role="popup" id="invalidNumber">
+				<p class="regMsg">Invalid Input<p>
+		</div>
+		<div data-role="popup" id="regUnsuccessfulMsg">
+				<p class="regMsg">Registration unsuccessful<p>
+				<p class="regMsg">Please Register Again<p>
 		</div>
 </div><!-- /page -->
 </body>

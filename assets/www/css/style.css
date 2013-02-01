@@ -23,6 +23,7 @@ div#subTotalBox p { margin: 5px 0 5px 0; }
 #regPage input.error { border-color:red; }
 #domainPage input.error { border-color:red; }
 #loginPage input.error { border-color:red; }
+.requiredMsg { color: red; }
 
 
 #dialog_info input.error { border-color:red; }
@@ -34,7 +35,7 @@ div#subTotalBox p { margin: 5px 0 5px 0; }
 #cart .ui-icon { background:  url(images/80-shopping-cart.png) 50% 50% no-repeat;  background-size: 26px 26px; }
 #home .ui-icon { background:  url(images/53-house.png) 50% 50% no-repeat;  background-size: 26px 26px; }
 
-#username, #password {margin: 1em 0 1em 0;}
+#paypal_email, #password {margin: 1em 0 1em 0;}
 
 .item_info { margin-bottom: 10px; }
 
