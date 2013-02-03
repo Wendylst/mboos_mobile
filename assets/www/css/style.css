@@ -39,6 +39,9 @@ div#subTotalBox p { margin: 5px 0 5px 0; }
 
 .item_info { margin-bottom: 10px; }
 
+.msgBoxForgotPword { padding: 1em; background-color:#f5f5b4; margin:0 0 1em 0; }
+.msgBoxForgotPword p  {text-align:center} 
+
 
 
 

@@ -16,11 +16,14 @@
 <div id="domainPage" data-role="page">
 		<div data-role="header" data-position="fixed" data-theme="b" >
 			<h1>Settings</h1>
+			<div class="ui-btn-right" data-role="controlgroup" data-type="horizontal">
+            	<a href="login.html" data-role="button" >Log in</a>
+        	</div>
 		</div><!-- /header -->
 		
 		<div id="regContent" data-role="content">	
 				
-				<p><label for="dName" >Domain Name *</label><input  class="dName" name="dName" type="text" class="required"/></p>
+				<p><label for="dName" >Domain Name *</label><input  class="dName" name="dName" type="text"/></p>
 				<p><input class="saveDomainBtn" type="submit" value="Save" data-theme="b"/></p>
 				<div data-role="popup" id="savingDomainMsg">
 					<p class="cartMsg">Saving...<p>

@@ -1,31 +1,109 @@
 /* Script for Registration Page*/
 $('#domainPage').live("pageshow", function(event){
 	
-	$('.saveDomainBtn').click(function() {
-		
-		setTimeout(function (){
-			
-			
-			if($('.dName').val().length == 0) {
-
-					$('.dName').addClass("error").focus();
-		
-			} else {
-	        	
-				var domain_name = $('.dName').val();
-				
-				$("#savingDomainMsg").popup('open');
-				window.setTimeout(function() {$("#savingDomainMsg").popup('close')}, 1000);
-				
-				
-				window.localStorage.setItem("domain_name", domain_name);
-				window.localStorage.setItem("domain_setup", "1");
-				window.location.href = 'login.html';
-	        	
-	        }
-	    }, 3000)
-	});
+	var domainName = window.localStorage.getItem("domain_name");
 	
+	
+	if(domainName == null) {
+		
+		$('.saveDomainBtn').click(function() {
+
+			setTimeout(function (){
+				
+				
+				if($('.dName').val().length == 0) {
+
+						$('.dName').addClass("error").focus();
+			
+				} else {
+		        	
+					var domain_name = $('.dName').val();
+					
+					$("#savingDomainMsg").popup('open');
+					window.setTimeout(function() {$("#savingDomainMsg").popup('close')}, 1000);
+					
+					
+					window.localStorage.setItem("domain_name", domain_name);
+					window.localStorage.setItem("domain_setup", "1");
+					window.location.href = 'login.html';
+		        	
+		        }
+		    }, 3000)
+			
+			
+		});
+		
+	} else {
+		
+		$('.dName').val(domainName);
+		
+	}
+	
+	
+	
+});
+
+/* Script for login Page*/
+$('#forgotPasswordPage').live("pageshow", function(event){
+	
+	var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
+	var domainName = window.localStorage.getItem("domain_name");
+	var serviceURL = "http://"+ domainName +"/MBOOS/mobile_ajax/login/";
+	
+	$('.resetBtn').click(function() {
+		
+		if($('.your_email').val().length == 0 ) {
+			
+			$('.your_email').addClass("error");
+			
+			$("#pwordRequiredEmail").popup('open');
+			window.setTimeout(function() {$("#pwordRequiredEmail").popup('close')}, 3000);
+			
+			
+		} else if(!$('.your_email').val().match(emailExp)) {
+			
+			$('.email').addClass("error");
+			$("#pwordInvalidEmail").popup('open');
+			window.setTimeout(function() {$("#pwordInvalidEmail").popup('close')}, 3000);
+			
+		} else {
+			
+			
+			$.ajax({
+				url			:	serviceURL + "forgot_password",	
+				type		: 	"post",
+				data		:	{email: $('.your_email').val() },
+				success		: 	function(data) {
+					
+							
+							if(data == "1") {					
+										
+									$('.textForgotMsg').empty().append("Instructions have been sent to your email address ("+ $('.your_email').val() +") on how to reset your password");	
+										
+									
+									window.plugins.childBrowser.showWebPage(serviceURL + 'reset_password?email='+ $('.your_email').val() + '', { showLocationBar: true });
+									$('.your_email').val("");
+									
+									} else {
+										
+										
+										$('.your_email').addClass("error");
+										
+										$("#pwordErrorMsg").popup('open');
+										window.setTimeout(function() {$("#pwordErrorMsg").popup('close')}, 3000);
+										
+									}
+									
+	
+									
+				}
+			});
+			
+		}
+		
+			
+		
+		});
 });
 
 /* Script for login Page*/
@@ -81,7 +159,7 @@ $('#loginPage').live("pageshow", function(event){
 				data		:	{email: $('.email').val(), pword: $('.password').val() },
 				success		: 	function(data) {
 					
-									//alert(data);
+									
 									if(data == "1") {
 										
 					        			
