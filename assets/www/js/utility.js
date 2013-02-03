@@ -1,6 +1,19 @@
 /* Script for Registration Page*/
 $('#domainPage').live("pageshow", function(event){
 	
+	$.ajax({
+		error		: function (req, status, error) {
+		      			if(status == "timeout") 
+		 	
+		      			$("#domainnoInternetConnection").popup('open');
+	        			window.setTimeout(function() {$("#domainnoInternetConnection").popup('close')}, 3000);
+						
+		   				},
+		timeout		: 	2000, //2 seconds
+		url			:	"http://www.google.com.ph/"
+		
+	});
+	
 	var domainName = window.localStorage.getItem("domain_name");
 	
 	
@@ -43,8 +56,21 @@ $('#domainPage').live("pageshow", function(event){
 	
 });
 
-/* Script for login Page*/
+/* Script for forgot password Page*/
 $('#forgotPasswordPage').live("pageshow", function(event){
+	
+	$.ajax({
+		error		: function (req, status, error) {
+		      			if(status == "timeout") 
+		 	
+		      			$("#forgotPasswordnoInternetConnection").popup('open');
+	        			window.setTimeout(function() {$("#forgotPasswordnoInternetConnection").popup('close')}, 3000);
+						
+		   				},
+		timeout		: 	2000, //2 seconds
+		url			:	"http://www.google.com.ph/"
+		
+	});
 	
 	var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
 	var domainName = window.localStorage.getItem("domain_name");
@@ -109,6 +135,19 @@ $('#forgotPasswordPage').live("pageshow", function(event){
 /* Script for login Page*/
 $('#loginPage').live("pageshow", function(event){
 	
+	$.ajax({
+		error		: function (req, status, error) {
+		      			if(status == "timeout") 
+		 	
+		      			$("#loginnoInternetConnection").popup('open');
+	        			window.setTimeout(function() {$("#loginnoInternetConnection").popup('close')}, 3000);
+						
+		   				},
+		timeout		: 	2000, //2 seconds
+		url			:	"http://www.google.com.ph/"
+		
+	});
+	
 	var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
 	var domainName = window.localStorage.getItem("domain_name");
 	var serviceURL = "http://"+ domainName +"/MBOOS/mobile_ajax/login/";
@@ -154,6 +193,14 @@ $('#loginPage').live("pageshow", function(event){
 			$('.password').removeClass("error");
 			
 			$.ajax({
+				error		: function (req, status, error) {
+				      			if(status == "timeout") 
+				 	
+				      			$("#loginnoInternetConnection").popup('open');
+			        			window.setTimeout(function() {$("#loginnoInternetConnection").popup('close')}, 3000);
+								
+				   				},
+				timeout		: 	2000, //2 seconds
 				url			:	serviceURL,	
 				type		: 	"post",
 				data		:	{email: $('.email').val(), pword: $('.password').val() },
@@ -193,6 +240,19 @@ $('#loginPage').live("pageshow", function(event){
 
 /* Script for Home Page Page*/
 $('#homePage').live("pageshow", function(event){
+	
+	$.ajax({
+		error		: function (req, status, error) {
+		      			if(status == "timeout") 
+		 	
+		      			$("#homenoInternetConnection").popup('open');
+	        			window.setTimeout(function() {$("#homenoInternetConnection").popup('close')}, 3000);
+						
+		   				},
+		timeout		: 	2000, //2 seconds
+		url			:	"http://www.google.com.ph/"
+		
+	});
 	
 	var is_logged_id = window.localStorage.getItem("is_logged_in");
 
@@ -241,6 +301,19 @@ $(document).live("pageinit", function(event){
 
 $('#detailsPage').live("pageshow", function(event){
 
+	$.ajax({
+		error		: function (req, status, error) {
+		      			if(status == "timeout") 
+		 	
+		      			$("#buyitemnoInternetConnection").popup('open');
+	        			window.setTimeout(function() {$("#buyitemnoInternetConnection").popup('close')}, 3000);
+						
+		   				},
+		timeout		: 	2000, //2 seconds
+		url			:	"http://www.google.com.ph/"
+		
+	});
+	
 	get_info();
 	
     /*Add to Cart Script*/
@@ -293,6 +366,19 @@ $('#detailsPage').live("pageshow", function(event){
 
 /* Script for Registration Page*/
 $('#regPage').live("pageshow", function(event){
+	
+	$.ajax({
+		error		: function (req, status, error) {
+		      			if(status == "timeout") 
+		 	
+		      			$("#regnoInternetConnection").popup('open');
+	        			window.setTimeout(function() {$("#regnoInternetConnection").popup('close')}, 3000);
+						
+		   				},
+		timeout		: 	2000, //2 seconds
+		url			:	"http://www.google.com.ph/"
+		
+	});
 	
 	var domainName = window.localStorage.getItem("domain_name");
 	
@@ -456,7 +542,19 @@ $('#regPage').live("pageshow", function(event){
 
 /* Script for Category Item Page*/
 $('#categoryPage').live("pageshow", function(event){
-
+	$.ajax({
+		error		: function (req, status, error) {
+		      			if(status == "timeout") 
+		 	
+		      			$("#byCatnoInternetConnection").popup('open');
+	        			window.setTimeout(function() {$("#byCatnoInternetConnection").popup('close')}, 3000);
+						
+		   				},
+		timeout		: 	2000, //2 seconds
+		url			:	"http://www.google.com.ph/"
+		
+	});
+	
 	get_cat_info();
 	
 });
@@ -492,6 +590,18 @@ function get_cat_info() {
 /* Script for Category Item Page*/
 $('#categoriesPage').live("pageshow", function(event){
 
+	$.ajax({
+		error		: function (req, status, error) {
+		      			if(status == "timeout") 
+		 	
+		      			$("#catnoInternetConnection").popup('open');
+	        			window.setTimeout(function() {$("#catnoInternetConnection").popup('close')}, 3000);
+						
+		   				},
+		timeout		: 	2000, //2 seconds
+		url			:	"http://www.google.com.ph/"
+		
+	});
 	categoryPage();
 	
 });
@@ -584,11 +694,56 @@ function searchPage() {
 	$('#search_data').listview('refresh');
 });
 
-	
 }
 
+$("#searchPage").live( "click", function(event, ui) {
+	
+	$.ajax({
+		error		: function (req, status, error) {
+		      			if(status == "timeout") 
+		 	
+		      			$("#SnoInternetConnection").popup('open');
+	        			window.setTimeout(function() {$("#SnoInternetConnection").popup('close')}, 3000);
+						
+		   				},
+		timeout		: 	2000, //2 seconds
+		url			:	"http://www.google.com.ph/"
+		
+	});
+	
+});
+
+$("#categoriesPage").live( "click", function(event, ui) {
+	
+	$.ajax({
+		error		: function (req, status, error) {
+		      			if(status == "timeout") 
+		 	
+		      			$("#catnoInternetConnection").popup('open');
+	        			window.setTimeout(function() {$("#catnoInternetConnection").popup('close')}, 3000);
+						
+		   				},
+		timeout		: 	2000, //2 seconds
+		url			:	"http://www.google.com.ph/"
+		
+	});
+	
+});
 
 $(".sRefreshBtn").live( "click", function(event, ui) {
+	
+	$.ajax({
+		error		: function (req, status, error) {
+		      			if(status == "timeout") 
+		 	
+		      			$("#SnoInternetConnection").popup('open');
+	        			window.setTimeout(function() {$("#SnoInternetConnection").popup('close')}, 3000);
+						
+		   				},
+		timeout		: 	2000, //2 seconds
+		url			:	"http://www.google.com.ph/"
+		
+	});
 	
 	$("#sRefreshMsg").popup('open');
 	window.setTimeout(function() {$("#sRefreshMsg").popup('close')}, 1000);
@@ -598,6 +753,19 @@ $(".sRefreshBtn").live( "click", function(event, ui) {
 
 $(".cRefreshBtn").live( "click", function(event, ui) {
 	
+	$.ajax({
+		error		: function (req, status, error) {
+		      			if(status == "timeout") 
+		 	
+		      			$("#catnoInternetConnection").popup('open');
+	        			window.setTimeout(function() {$("#catnoInternetConnection").popup('close')}, 3000);
+						
+		   				},
+		timeout		: 	2000, //2 seconds
+		url			:	"http://www.google.com.ph/"
+		
+	});
+	
 	$("#cRefreshMsg").popup('open');
 	window.setTimeout(function() {$("#cRefreshMsg").popup('close')}, 1000);
 	categoryPage();
@@ -606,6 +774,19 @@ $(".cRefreshBtn").live( "click", function(event, ui) {
 
 $('#cartPage').live("pageshow", function(event){
 
+	$.ajax({
+		error		: function (req, status, error) {
+		      			if(status == "timeout") 
+		 	
+		      			$("#cartnoInternetConnection").popup('open');
+	        			window.setTimeout(function() {$("#cartnoInternetConnection").popup('close')}, 3000);
+						
+		   				},
+		timeout		: 	2000, //2 seconds
+		url			:	"http://www.google.com.ph/"
+		
+	});
+	
 	setupDB();
 	
 	$('.cartRefreshBtn').click(function() {
@@ -639,6 +820,19 @@ $('#cartPage').live("pageshow", function(event){
 
 
 $('#checkoutPage').live("pageshow", function(event) {
+	
+	$.ajax({
+		error		: function (req, status, error) {
+		      			if(status == "timeout") 
+		 	
+		      			$("#checkoutnoInternetConnection").popup('open');
+	        			window.setTimeout(function() {$("#checkoutnoInternetConnection").popup('close')}, 3000);
+						
+		   				},
+		timeout		: 	2000, //2 seconds
+		url			:	"http://www.google.com.ph/"
+		
+	});
 	
 	var cart_items = localStorage.getItem("cart_items")
 	
@@ -686,6 +880,19 @@ $('#checkoutPage').live("pageshow", function(event) {
 });
 
 $('#profilePage').live("pageshow", function(event) {
+	
+	$.ajax({
+		error		: function (req, status, error) {
+		      			if(status == "timeout") 
+		 	
+		      			$("#profilenoInternetConnection").popup('open');
+	        			window.setTimeout(function() {$("#profilenoInternetConnection").popup('close')}, 3000);
+						
+		   				},
+		timeout		: 	2000, //2 seconds
+		url			:	"http://www.google.com.ph/"
+		
+	});
 	
 	var currUser = window.localStorage.getItem("user_email");
 	var getCurrDomain = window.localStorage.getItem("domain_name");
@@ -992,6 +1199,19 @@ function del_table(id) {
 
 $('#editPage').live("pageshow", function(event){
 
+	$.ajax({
+		error		: function (req, status, error) {
+		      			if(status == "timeout") 
+		 	
+		      			$("#editnoInternetConnection").popup('open');
+	        			window.setTimeout(function() {$("#editnoInternetConnection").popup('close')}, 3000);
+						
+		   				},
+		timeout		: 	2000, //2 seconds
+		url			:	"http://www.google.com.ph/"
+		
+	});
+	
 	var domainName = window.localStorage.getItem("domain_name");
 	
 	var serviceURL = "http://"+ domainName +"/MBOOS/mobile_ajax/mobile/";
