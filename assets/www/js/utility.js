@@ -364,6 +364,59 @@ $('#detailsPage').live("pageshow", function(event){
 	
 });
 
+$('#orderDetailsPage').live('pageshow',function() {
+	
+	$.ajax({
+		error		: function (req, status, error) {
+		      			if(status == "timeout") 
+		 	
+		      			$("#orderDetailsnoInternetConnection").popup('open');
+	        			window.setTimeout(function() {$("#orderDetailsnoInternetConnection").popup('close')}, 3000);
+						
+		   				},
+		timeout		: 	2000, //2 seconds
+		url			:	"http://www.google.com.ph/"
+		
+	});
+	
+	var getCurrDomain = window.localStorage.getItem("domain_name");
+	var order_id = getUrlVars()["order_id"];
+	var serviceURL = "http://"+ getCurrDomain +"/MBOOS/mobile_ajax/customer/";
+	
+	$.getJSON(serviceURL + 'order_summary_details?order_id='+order_id, function(data) {
+	
+		summary_details = data.summary_details;
+		
+		$.each(summary_details, function(index, detail) {
+			
+			var subtotal = parseFloat(detail.mboos_order_detail_price) * parseFloat(detail.mboos_order_detail_quantity);
+			$('#order_num').empty().append("000"+detail.mboos_order_id);
+			$('#date_ordered').empty().append(detail.mboos_order_date);
+			$('#dateToBePickUp').empty().append(detail.mboos_order_pick_schedule);
+			
+			
+			$('#summaryList').append('<li>' +
+					'<h4>' + detail.mboos_product_name  +'</h4>' + 
+					'<p>Item number : 000' + detail.mboos_product_id + '</p>' +
+					'<p>Item price : '+detail.mboos_order_detail_price +'</p>' +
+					'<p>Quantity : '+detail.mboos_order_detail_quantity+'</p>' +
+					'<p class="ui-li-aside"><strong>'+ subtotal +'</strong></p>' +
+					'</li>'); 
+	
+			$("#summaryList").listview("refresh");
+			
+			$('#overall_total').empty().append(detail.mboos_orders_total_price +" PHP");
+
+			
+		});
+
+	});
+	
+	
+	
+	
+});
+
 /* Script for Registration Page*/
 $('#regPage').live("pageshow", function(event){
 	
@@ -895,12 +948,11 @@ $('#profilePage').live("pageshow", function(event) {
 	});
 	
 	var currUser = window.localStorage.getItem("user_email");
-	var getCurrDomain = window.localStorage.getItem("domain_name");
-	$('#dName').val(getCurrDomain);
+	var domainName = window.localStorage.getItem("domain_name");
 	
+	$('#dName').val(domainName);
 	
-	
-	var serviceURL = "http://"+ getCurrDomain +"/MBOOS/mobile_ajax/customer/";
+	var serviceURL = "http://"+ domainName +"/MBOOS/mobile_ajax/customer/";
 	
 	$.getJSON(serviceURL + 'customer_info?email='+currUser, function(data) {
 	
@@ -925,7 +977,9 @@ $('#profilePage').live("pageshow", function(event) {
 		
 			$.each(summaries, function(index, summary) {
 				
-				$('#order_summary').append('<li>Order Number : 000'+ summary.mboos_order_id +'</li>');
+				$('#order_summary').append('<li><a class="id_item" href="order_details.html?order_id=' + summary.mboos_order_id + '">' + 
+										   '<h4>000' + summary.mboos_order_id +'</h4>' + 
+										   '</a></li>');
 				
 			});
 			

@@ -1,0 +1,50 @@
+<!DOCTYPE html> 
+<html> 
+	<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">  
+    <script src="js/cordova-1.9.0.js"></script>
+    <link rel="stylesheet" href="css/style.css" /> 	
+	<link rel="stylesheet" href="css/jquery.mobile-1.2.0.css" />
+	<script src="js/jquery.js"></script>
+	<script src="js/utility.js"></script> 
+   	<script src="js/jquery.mobile-1.2.0.js"></script>
+   	<script type="text/javascript" charset="utf-8" src="js/childbrowser.js"></script>
+   	
+</head> 
+<body>
+<div id="orderDetailsPage" data-role="page">
+		<div data-role="header" data-position="fixed" data-theme="b">
+			<div class="ui-btn-left" data-role="controlgroup" data-type="horizontal">
+            	<a class="searchhBtn" href="profile.html" data-role="button">Back</a>
+        	</div>
+				<h1>Order Details</h1>
+		</div><!-- /header -->
+		<div data-role="popup" id="refreshingMsg">
+			<p>Refresh...<p>
+		</div>
+		<div id="center_box" data-role="content">
+			<ul id="summaryList" data-role="listview">	
+				<li><p><strong><label>Order Number : </label><span id="order_num"></span></strong></p>
+				<p><strong><label>Date Ordered : </label><span id="date_ordered"></span></strong></p>
+				<p><strong><label>Date to be Pick Up : </label><span id="dateToBePickUp"></span></strong></p>
+				<p><strong><label>Total : </label><span id="overall_total"></span></strong></p>
+				<hr>
+				<span class="orderDetail_header_left"><strong>Description</strong></span><span class="orderDetail_header_right"><strong>Amount</strong></span></li>
+			</ul>
+			
+		</div>
+		
+		<div data-role="footer" data-id="foo1" data-position="fixed" data-theme="b">
+			<div data-role="navbar" class="nav-glyphish-example" data-iconpos="top">
+				<ul>
+					<li><a id="home" href="index.html" data-prefetch="true" rel="external" data-icon="custom">HOME</a></li>
+					<li><a id="profile" href="profile.html" data-prefetch="true" data-icon="custom">PROFILE</a></li>
+					<li><a id="cart" href="cart.html" data-prefetch="true" rel="external" class="ui-btn-active ui-state-persist" data-icon="custom">CART</a></li>
+				</ul>
+				
+			</div><!-- /navbar -->
+		</div><!-- /footer -->	
+</div><!-- /page -->
+</body>
+</html>
