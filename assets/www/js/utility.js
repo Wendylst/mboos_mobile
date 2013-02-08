@@ -1,21 +1,14 @@
 /* Script for Registration Page*/
 $('#domainPage').live("pageshow", function(event){
 	
-	$.ajax({
-		error		: function (req, status, error) {
-		      			if(status == "timeout") 
-		 	
-		      			$("#domainnoInternetConnection").popup('open');
-	        			window.setTimeout(function() {$("#domainnoInternetConnection").popup('close')}, 3000);
-						
-		   				},
-		timeout		: 	2000, //2 seconds
-		url			:	"http://www.google.com.ph/"
-		
-	});
 	
 	var domainName = window.localStorage.getItem("domain_name");
 	
+	$('.dName').change(function() {
+		
+		$(this).removeClass("error");
+		
+	});
 	
 	if(domainName == null) {
 		
@@ -50,6 +43,33 @@ $('#domainPage').live("pageshow", function(event){
 		
 		$('.dName').val(domainName);
 		
+		$('.saveDomainBtn').click(function() {
+
+			setTimeout(function (){
+				
+				
+				if($('.dName').val().length == 0) {
+
+						$('.dName').addClass("error").focus();
+			
+				} else {
+		        	
+					var domain_name = $('.dName').val();
+					
+					$("#savingDomainMsg").popup('open');
+					window.setTimeout(function() {$("#savingDomainMsg").popup('close')}, 1000);
+					
+					
+					window.localStorage.setItem("domain_name", domain_name);
+					window.localStorage.setItem("domain_setup", "1");
+					window.location.href = 'login.html';
+		        	
+		        }
+		    }, 3000)
+			
+			
+		});
+		
 	}
 	
 	
@@ -59,18 +79,7 @@ $('#domainPage').live("pageshow", function(event){
 /* Script for forgot password Page*/
 $('#forgotPasswordPage').live("pageshow", function(event){
 	
-	$.ajax({
-		error		: function (req, status, error) {
-		      			if(status == "timeout") 
-		 	
-		      			$("#forgotPasswordnoInternetConnection").popup('open');
-	        			window.setTimeout(function() {$("#forgotPasswordnoInternetConnection").popup('close')}, 3000);
-						
-		   				},
-		timeout		: 	2000, //2 seconds
-		url			:	"http://www.google.com.ph/"
-		
-	});
+
 	
 	var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
 	var domainName = window.localStorage.getItem("domain_name");
@@ -96,6 +105,14 @@ $('#forgotPasswordPage').live("pageshow", function(event){
 			
 			
 			$.ajax({
+				error		: function (req, status, error) {
+	      					if(status == "timeout") 
+	 	
+	      					$("#forgotPasswordnoInternetConnection").popup('open');
+	      					window.setTimeout(function() {$("#forgotPasswordnoInternetConnection").popup('close')}, 3000);
+					
+	   						},
+	   			timeout		: 	2000, //2 seconds
 				url			:	serviceURL + "forgot_password",	
 				type		: 	"post",
 				data		:	{email: $('.your_email').val() },
@@ -135,30 +152,18 @@ $('#forgotPasswordPage').live("pageshow", function(event){
 /* Script for login Page*/
 $('#loginPage').live("pageshow", function(event){
 	
-	$.ajax({
-		error		: function (req, status, error) {
-		      			if(status == "timeout") 
-		 	
-		      			$("#loginnoInternetConnection").popup('open');
-	        			window.setTimeout(function() {$("#loginnoInternetConnection").popup('close')}, 3000);
-						
-		   				},
-		timeout		: 	2000, //2 seconds
-		url			:	"http://www.google.com.ph/"
-		
-	});
 	
 	var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
 	var domainName = window.localStorage.getItem("domain_name");
 	var serviceURL = "http://"+ domainName +"/MBOOS/mobile_ajax/login/";
 	
-	$('.email').change(function() {
+	$('.log_email').change(function() {
 		
 		$(this).removeClass("error");
 		
 	});
 	
-	$('.password').change(function() {
+	$('.log_password').change(function() {
 		
 		$(this).removeClass("error");
 		
@@ -167,30 +172,32 @@ $('#loginPage').live("pageshow", function(event){
 	
 	$('.loginBtn').click(function() {
 		
-		if($('.email').val().length == 0 ) {
+		if($('.log_email').val().length == 0 ) {
 			
-			$('.email').addClass("error");
+			$('.log_email').addClass("error");
 			
 			$("#requiredEmail").popup('open');
 			window.setTimeout(function() {$("#requiredEmail").popup('close')}, 3000);
+			return false;
 			
+		} else if(!$('.log_email').val().match(emailExp)) {
 			
-		} else if(!$('.email').val().match(emailExp)) {
-			
-			$('.email').addClass("error");
+			$('.log_email').addClass("error");
 			$("#invalidEmail").popup('open');
 			window.setTimeout(function() {$("#invalidEmail").popup('close')}, 3000);
+			return false;
 			
-		} else if ($('.password').val().length == 0) {
+		} else if ($('.log_password').val().length == 0) {
 			
-			$('.password').addClass("error");
+			$('.log_password').addClass("error");
 			$("#requiredPassword").popup('open');
 			window.setTimeout(function() {$("#requiredPassword").popup('close')}, 3000);
+			return false;
 			
 		} else {
 			
-			$('.email').removeClass("error");
-			$('.password').removeClass("error");
+			$('.log_email').removeClass("error");
+			$('.log_password').removeClass("error");
 			
 			$.ajax({
 				error		: function (req, status, error) {
@@ -203,7 +210,7 @@ $('#loginPage').live("pageshow", function(event){
 				timeout		: 	2000, //2 seconds
 				url			:	serviceURL,	
 				type		: 	"post",
-				data		:	{email: $('.email').val(), pword: $('.password').val() },
+				data		:	{email: $('.log_email').val(), pword: $('.log_password').val() },
 				success		: 	function(data) {
 					
 									
@@ -214,7 +221,7 @@ $('#loginPage').live("pageshow", function(event){
 										$("#loginInfoMsg").popup('open');
 										
 										window.localStorage.setItem("is_logged_in", "1");
-										window.localStorage.setItem("user_email", $('.email').val());
+										window.localStorage.setItem("user_email", $('.log_email').val());
 										
 					        			window.setTimeout(function() {$("#loginErrorMsg").popup('close')}, 1000);
 										
@@ -241,18 +248,6 @@ $('#loginPage').live("pageshow", function(event){
 /* Script for Home Page Page*/
 $('#homePage').live("pageshow", function(event){
 	
-	$.ajax({
-		error		: function (req, status, error) {
-		      			if(status == "timeout") 
-		 	
-		      			$("#homenoInternetConnection").popup('open');
-	        			window.setTimeout(function() {$("#homenoInternetConnection").popup('close')}, 3000);
-						
-		   				},
-		timeout		: 	2000, //2 seconds
-		url			:	"http://www.google.com.ph/"
-		
-	});
 	
 	var is_logged_id = window.localStorage.getItem("is_logged_in");
 
@@ -301,63 +296,67 @@ $(document).live("pageinit", function(event){
 
 $('#detailsPage').live("pageshow", function(event){
 
-	$.ajax({
-		error		: function (req, status, error) {
-		      			if(status == "timeout") 
-		 	
-		      			$("#buyitemnoInternetConnection").popup('open');
-	        			window.setTimeout(function() {$("#buyitemnoInternetConnection").popup('close')}, 3000);
-						
-		   				},
-		timeout		: 	2000, //2 seconds
-		url			:	"http://www.google.com.ph/"
-		
-	});
 	
 	get_info();
 	
     /*Add to Cart Script*/
 	
     $('.addCartBtn').click(function() {
-    		
+    	
+    		var message = localStorage.getItem("availability_message");
     		var item_availability = parseInt(localStorage.getItem("item_availability"));
     		var qtyVal = parseInt($('input.qtyForm').val());
     		
     		var regInt =  /^([\d]+[\d]+\b|[\d]+\b)$/;
     		
-    		if($('input.qtyForm').val().match(regInt)) {
-    			
-    			if(qtyVal <= item_availability) {
-    				
-        		//'id'=>'1','name'=>'ian','item_id'=>'0001','qty'=>'5','price'=>'100.00' ||'id'=>'2','name'=>'paul','item_id'=>'0002','qty'=>'3','price'=>'10.00'
-    				
-            	var item = [$('input.item_id').val() + ","+ $('input.item_name_val').val() + ","+ $('input.item_price_val').val() + ","+ $('input.qtyForm').val() + ""];
-            	
-            	var strItem = item.toString();
-            	var items = strItem.split(",");
-            	
-            	setupDB();
-            	addItem(items[0], items[1], items[2], items[3]);
-            	
-            	$("#popupDialog").popup('open');
-            	
-    			} else {
-            		
-        			$("#aCheckMsg").popup('open');
-        			window.setTimeout(function() {$("#aCheckMsg").popup('close')}, 3000);	
-        			return false;
-        			
-            	}
-            	
+    		if(message == "null") {
+
+    			$("#messagePopUp").popup('open');
+    			return false;
+
     		} else {
     			
-    			$("#intChecker").popup('open');
-    			window.setTimeout(function() {$("#intChecker").popup('close')}, 3000);	
-    			return false;
-    			
-    		}
+    			if($('input.qtyForm').val().match(regInt)) {
+	    			
+	    			if(qtyVal == 0) {
+	    				
+	    				$("#qtyZero").popup('open');
+	        			window.setTimeout(function() {$("#qtyZero").popup('close')}, 3000);	
+	        			return false;
+	    				
+	    			} else if(qtyVal <= item_availability) {
+	    				
+	    			
+	    				
+	        		//'id'=>'1','name'=>'ian','item_id'=>'0001','qty'=>'5','price'=>'100.00' ||'id'=>'2','name'=>'paul','item_id'=>'0002','qty'=>'3','price'=>'10.00'
+	    				
+	            	var item = [$('input.item_id').val() + ","+ $('input.item_name_val').val() + ","+ $('input.item_price_val').val() + ","+ $('input.qtyForm').val() + ""];
+	            	
+	            	var strItem = item.toString();
+	            	var items = strItem.split(",");
+	            	
+	            	setupDB();
+	            	addItem(items[0], items[1], items[2], items[3]);
+	            	
+	            	$("#popupDialog").popup('open');
+	            	
+	    			} else {
+	            		
+	        			$("#aCheckMsg").popup('open');
+	        			window.setTimeout(function() {$("#aCheckMsg").popup('close')}, 3000);	
+	        			return false;
+	        			
+	            	}
+	            	
+	    		} else {
+	    			
+	    			$("#intChecker").popup('open');
+	    			window.setTimeout(function() {$("#intChecker").popup('close')}, 3000);	
+	    			return false;
+	    			
+	    		}
 
-    		
+    		}
 	
     });
    
@@ -365,19 +364,6 @@ $('#detailsPage').live("pageshow", function(event){
 });
 
 $('#orderDetailsPage').live('pageshow',function() {
-	
-	$.ajax({
-		error		: function (req, status, error) {
-		      			if(status == "timeout") 
-		 	
-		      			$("#orderDetailsnoInternetConnection").popup('open');
-	        			window.setTimeout(function() {$("#orderDetailsnoInternetConnection").popup('close')}, 3000);
-						
-		   				},
-		timeout		: 	2000, //2 seconds
-		url			:	"http://www.google.com.ph/"
-		
-	});
 	
 	var getCurrDomain = window.localStorage.getItem("domain_name");
 	var order_id = getUrlVars()["order_id"];
@@ -387,12 +373,22 @@ $('#orderDetailsPage').live('pageshow',function() {
 	
 		summary_details = data.summary_details;
 		
+		dateToBePickUp = data.dateToBePickUp;
+		
+		$.each(dateToBePickUp, function(index, date) { 
+			
+			$('#date_ordered').empty().append(date.dateOrderd);
+			$('#dateToBePickUp').empty().append(date.datePickUpFormmated);
+			
+		});
+		
+		
 		$.each(summary_details, function(index, detail) {
 			
 			var subtotal = parseFloat(detail.mboos_order_detail_price) * parseFloat(detail.mboos_order_detail_quantity);
 			$('#order_num').empty().append("000"+detail.mboos_order_id);
-			$('#date_ordered').empty().append(detail.mboos_order_date);
-			$('#dateToBePickUp').empty().append(detail.mboos_order_pick_schedule);
+			
+			
 			
 			
 			$('#summaryList').append('<li>' +
@@ -420,18 +416,6 @@ $('#orderDetailsPage').live('pageshow',function() {
 /* Script for Registration Page*/
 $('#regPage').live("pageshow", function(event){
 	
-	$.ajax({
-		error		: function (req, status, error) {
-		      			if(status == "timeout") 
-		 	
-		      			$("#regnoInternetConnection").popup('open');
-	        			window.setTimeout(function() {$("#regnoInternetConnection").popup('close')}, 3000);
-						
-		   				},
-		timeout		: 	2000, //2 seconds
-		url			:	"http://www.google.com.ph/"
-		
-	});
 	
 	var domainName = window.localStorage.getItem("domain_name");
 	
@@ -440,7 +424,8 @@ $('#regPage').live("pageshow", function(event){
 	
 	var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
 	var strongPword =  /(?!^[0-9]*$)(?!^[a-zA-Z!@#$%^&*()_+=<>?]*$)^([a-zA-Z!@#$%^&*()_+=<>?0-9]{6,15})$/;
-	var onlyNumber = /^[0-9]+$/;
+	var cnumber = /^(\(\d+\)\s{0,1}){0,1}(\d+((\-|\s){0,1})\d+){0,}$/;
+	var alphaExp =  /^[a-zA-Z_\s ]*$/g;
 	
 	$('.fname').change(function() {
 		
@@ -448,9 +433,9 @@ $('#regPage').live("pageshow", function(event){
 		
 	});
 	
-	$('.password').change(function() {
+	$('.reg_password').change(function() {
 		
-		$('.password').removeClass("error");
+		$('.reg_password').removeClass("error");
 		
 	});
 	
@@ -467,22 +452,25 @@ $('#regPage').live("pageshow", function(event){
 	});
 	
 	
-	$('.email').change(function() {
+	$('#email_addr').change(function() {
 		
 		
 		$.ajax({
 			url			:	serviceURL + "email_checker",	
 			type		: 	"post",
-			data		:	{email: $('.email').val() },
+			data		:	{email: $('#email_addr').val() },
 			success		: 	function(data) {
 				
 								if(data == "1") {					
 									
 									$("#emailChecker").popup('open');
 									window.setTimeout(function() {$("#emailChecker").popup('close')}, 3000);
-									$('.email').addClass("error").focus();
+									$('#email_addr').addClass("error").focus();
+									$('.regBtn').attr('disabled','disabled');
+									
 								} else {
 									
+									$('.regBtn').removeAttr('disabled');
 									$('.email').removeClass("error");
 									
 								}
@@ -498,52 +486,72 @@ $('#regPage').live("pageshow", function(event){
 	
 	$('.regBtn').click(function() {
 		
+		//alert($('.fname').val() + "  " + $('#email_addr').val() + " " + $('#reg_password').val() +" " + $('.address').val() + " " + $('.cNumber').val() + " ")
 		
 		
-		if($('.fname').val().length == 0) {
+		if($('.fname').val().length == 0 ) {
+			
+			$('.fname').addClass("error").focus();
+
+			$("#cnameIsRequired").popup('open');
+			window.setTimeout(function() {$("#cnameIsRequired").popup('close')}, 3000);
+			return false;
+			
+		} else if(!$('.fname').val().match(alphaExp)) {
+		
 			
 			$('.fname').addClass("error").focus();
 			
-		} else if($('.email').val().length == 0 ) {
+			$("#invalidName").popup('open');
+			window.setTimeout(function() {$("#invalidName").popup('close')}, 3000);
+			return false;
 			
+		} else if($('#email_addr').val().length == 0 ) {
+
 			$('.fname').removeClass("error");
-			$('.email').addClass("error").focus();
+			$('#email_addr').addClass("error").focus();
 			
 			$("#emailRequired").popup('open');
 			window.setTimeout(function() {$("#emailRequired").popup('close')}, 3000);
+			return false;
 			
-		} else if(!$('.email').val().match(emailExp)) {
+		} else if(!$('#email_addr').val().match(emailExp)) {
 			
 			$('.fname').removeClass("error");
-			$('.email').addClass("error").focus();
+			$('#email_addr').addClass("error").focus();
 			
 			$("#emailExistMsg").popup('open');
 			window.setTimeout(function() {$("#emailExistMsg").popup('close')}, 3000);
+			return false;
 			
-		} else if($('.password').val().length == 0) {
+		} else if($('.reg_password').val().length == 0 ) {
 			
-			$('.email').removeClass("error");
-			$('.password').addClass("error").focus();
+			$('#email_addr').removeClass("error");
+			$('.reg_password').addClass("error").focus();
+			return false;
 			
-		} else if(!$('.password').val().match(strongPword)) {
+		} else if(!$('.reg_password').val().match(strongPword)) {
 			
 			$("#passwordTipsMsg").popup('open');
 			window.setTimeout(function() {$("#passwordTipsMsg").popup('close')}, 3000);
 			
-			$('.email').removeClass("error");
-			$('.password').addClass("error").focus();
+			$('#email_addr').removeClass("error");
+			$('.reg_password').addClass("error").focus();
+			return false;
 			
 		} else if($('.address').val().length == 0) {
 			
-			$('.password').removeClass("error");
+			$('.reg_password').removeClass("error");
 			$('.address').addClass("error").focus();
+			return false;
 			
 		} else if($('.cNumber').val().length == 0) {
 			
 			$('.address').removeClass("error");
-			$('.cNumber').addClass("error").focus();
+			$('.cNumber').addClass("error").focus(); 
+			return false;
 			
-		} else if(!$('.cNumber').val().match(onlyNumber)) {
+		} else if(!$('.cNumber').val().match(cnumber)) {
 			
 			$("#invalidNumber").popup('open');
 			window.setTimeout(function() {$("#invalidNumber").popup('close')}, 3000);
@@ -551,29 +559,34 @@ $('#regPage').live("pageshow", function(event){
 			
 			$('.address').removeClass("error");
 			$('.cNumber').addClass("error").focus();
+			return false;
 			
 		} else {
-		
-			$("#savingInfoMsg").popup('open');
-			window.setTimeout(function() {$("#savingInfoMsg").popup('close')}, 3000);
-		
+
 			var name = $('.fname').val();
 			var addr = $('.address').val();
-			var email = $('.email').val();
+			var email = $('#email_addr').val();
 			var number = $('.cNumber').val();
-			var password = $('.password').val();	
+			var password = $('.reg_password').val();	
 			
 			var request = $.ajax({
 				
-					url: serviceURL,
-					type: "POST",
-					data: { cname: name, address: addr, email: email, cpnumber: number, pword: password },
-					dataType: "html"
+					url			: serviceURL,
+					type		: "POST",
+					data		: { cname: name, address: addr, email: email, cpnumber: number, pword: password },
+					dataType	: "html",
+					success		: 	function(data) {
+										
+										
+										$("#savingInfoMsg").popup('open');
+										window.setTimeout(function() {$("#savingInfoMsg").popup('close')}, 3000);
+						
+									}
 						
 			});
 			
 			request.done(function(msg) {
-					
+				
 					window.location.href = 'login.html';
 					
 			});
@@ -595,18 +608,7 @@ $('#regPage').live("pageshow", function(event){
 
 /* Script for Category Item Page*/
 $('#categoryPage').live("pageshow", function(event){
-	$.ajax({
-		error		: function (req, status, error) {
-		      			if(status == "timeout") 
-		 	
-		      			$("#byCatnoInternetConnection").popup('open');
-	        			window.setTimeout(function() {$("#byCatnoInternetConnection").popup('close')}, 3000);
-						
-		   				},
-		timeout		: 	2000, //2 seconds
-		url			:	"http://www.google.com.ph/"
-		
-	});
+
 	
 	get_cat_info();
 	
@@ -643,18 +645,6 @@ function get_cat_info() {
 /* Script for Category Item Page*/
 $('#categoriesPage').live("pageshow", function(event){
 
-	$.ajax({
-		error		: function (req, status, error) {
-		      			if(status == "timeout") 
-		 	
-		      			$("#catnoInternetConnection").popup('open');
-	        			window.setTimeout(function() {$("#catnoInternetConnection").popup('close')}, 3000);
-						
-		   				},
-		timeout		: 	2000, //2 seconds
-		url			:	"http://www.google.com.ph/"
-		
-	});
 	categoryPage();
 	
 });
@@ -686,18 +676,27 @@ function get_info() {
 		
 	item_info = data.item_info;
 	
+	availability = data.availability;
+	
+		$.each(availability, function(index, available) {
+		
+			$('li.item_availability').append(available.availability);
+			localStorage.setItem('item_availability', available.availability );	
+			localStorage.setItem('availability_message', available.message );	
+		});
+	
 		$.each(item_info, function(index, info) {
 			
 			$('label.item_name').append(info.mboos_product_name);
 			$('label.item_price').append("PHP"+info.mboos_product_price);
 			$('p.item_image').append('<img src="http://'+ domainName +'/MBOOS/images/item_images/' + info.mboos_product_image + '" height="100" width="100">');
-			$('li.item_availability').append(info.mboos_product_availability);
+			
 			$('p.item_desc').append(info.mboos_product_desc);
 			$('input.item_id').val(info.mboos_product_id);
 			$('input.item_name_val').val(info.mboos_product_name);
 			$('input.item_price_val').val(info.mboos_product_price);
 				
-			localStorage.setItem('item_availability', info.mboos_product_availability );	
+			
 			});
 		
 	
@@ -751,52 +750,16 @@ function searchPage() {
 
 $("#searchPage").live( "click", function(event, ui) {
 	
-	$.ajax({
-		error		: function (req, status, error) {
-		      			if(status == "timeout") 
-		 	
-		      			$("#SnoInternetConnection").popup('open');
-	        			window.setTimeout(function() {$("#SnoInternetConnection").popup('close')}, 3000);
-						
-		   				},
-		timeout		: 	2000, //2 seconds
-		url			:	"http://www.google.com.ph/"
-		
-	});
 	
 });
 
 $("#categoriesPage").live( "click", function(event, ui) {
 	
-	$.ajax({
-		error		: function (req, status, error) {
-		      			if(status == "timeout") 
-		 	
-		      			$("#catnoInternetConnection").popup('open');
-	        			window.setTimeout(function() {$("#catnoInternetConnection").popup('close')}, 3000);
-						
-		   				},
-		timeout		: 	2000, //2 seconds
-		url			:	"http://www.google.com.ph/"
-		
-	});
 	
 });
 
 $(".sRefreshBtn").live( "click", function(event, ui) {
 	
-	$.ajax({
-		error		: function (req, status, error) {
-		      			if(status == "timeout") 
-		 	
-		      			$("#SnoInternetConnection").popup('open');
-	        			window.setTimeout(function() {$("#SnoInternetConnection").popup('close')}, 3000);
-						
-		   				},
-		timeout		: 	2000, //2 seconds
-		url			:	"http://www.google.com.ph/"
-		
-	});
 	
 	$("#sRefreshMsg").popup('open');
 	window.setTimeout(function() {$("#sRefreshMsg").popup('close')}, 1000);
@@ -815,7 +778,7 @@ $(".cRefreshBtn").live( "click", function(event, ui) {
 						
 		   				},
 		timeout		: 	2000, //2 seconds
-		url			:	"http://www.google.com.ph/"
+		url			:	"http://mboos.ipklab.dx.am/MBOOS/"
 		
 	});
 	
@@ -827,18 +790,6 @@ $(".cRefreshBtn").live( "click", function(event, ui) {
 
 $('#cartPage').live("pageshow", function(event){
 
-	$.ajax({
-		error		: function (req, status, error) {
-		      			if(status == "timeout") 
-		 	
-		      			$("#cartnoInternetConnection").popup('open');
-	        			window.setTimeout(function() {$("#cartnoInternetConnection").popup('close')}, 3000);
-						
-		   				},
-		timeout		: 	2000, //2 seconds
-		url			:	"http://www.google.com.ph/"
-		
-	});
 	
 	setupDB();
 	
@@ -874,20 +825,11 @@ $('#cartPage').live("pageshow", function(event){
 
 $('#checkoutPage').live("pageshow", function(event) {
 	
-	$.ajax({
-		error		: function (req, status, error) {
-		      			if(status == "timeout") 
-		 	
-		      			$("#checkoutnoInternetConnection").popup('open');
-	        			window.setTimeout(function() {$("#checkoutnoInternetConnection").popup('close')}, 3000);
-						
-		   				},
-		timeout		: 	2000, //2 seconds
-		url			:	"http://www.google.com.ph/"
-		
-	});
 	
 	var cart_items = localStorage.getItem("cart_items")
+	var paypal_account = localStorage.getItem("paypal_email")
+	
+	$('#paypal_email').val(paypal_account);
 	
 	if(cart_items == 0) {
 		
@@ -934,18 +876,6 @@ $('#checkoutPage').live("pageshow", function(event) {
 
 $('#profilePage').live("pageshow", function(event) {
 	
-	$.ajax({
-		error		: function (req, status, error) {
-		      			if(status == "timeout") 
-		 	
-		      			$("#profilenoInternetConnection").popup('open');
-	        			window.setTimeout(function() {$("#profilenoInternetConnection").popup('close')}, 3000);
-						
-		   				},
-		timeout		: 	2000, //2 seconds
-		url			:	"http://www.google.com.ph/"
-		
-	});
 	
 	var currUser = window.localStorage.getItem("user_email");
 	var domainName = window.localStorage.getItem("domain_name");
@@ -991,19 +921,54 @@ $('#profilePage').live("pageshow", function(event) {
 	
 	$('.profileSaveBtn').click(function() {
 		
+		var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
+		var strongPword =  /(?!^[0-9]*$)(?!^[a-zA-Z!@#$%^&*()_+=<>?]*$)^([a-zA-Z!@#$%^&*()_+=<>?0-9]{6,15})$/;
+		var cnumber = /^(\(\d+\)\s{0,1}){0,1}(\d+((\-|\s){0,1})\d+){0,}$/;
+		
 		var customer_id = $('.cust_id').val();
 		var cname = $('#cName').val();
 		var addr = $('#address').val();
 		var email = $('#email').val();
 		var cnumber = $('#cNumber').val();
 		
-		
-		var request = $.ajax({
+		if(!email.match(emailExp)) {
 			
-				url: serviceURL + "customer_edit",
-				type: "POST",
-				data: {cust_id : customer_id, name : cname, address : addr, email : email, number : cnumber },
-				dataType: "html"
+			$("#cnameEmptyMsg").popup('open');
+			window.setTimeout(function() {$("#cnameEmptyMsg").popup('close')}, 3000);
+		
+			
+			
+		} else if(email.lenght == 0) {
+			
+			
+			$("#emailIsEmpty").popup('open');
+			window.setTimeout(function() {$("#emailIsEmpty").popup('close')}, 3000);
+			
+			
+		} else if(!cnumber.match(cnumber)) {
+			
+			$("#profilenumberTipsMsg").popup('open');
+			window.setTimeout(function() {$("#profilenumberTipsMsg").popup('close')}, 3000);
+			
+			
+		} else {
+			
+		
+			
+		var request = $.ajax({
+				
+				error		: function (req, status, error) {
+							if(status == "timeout") 
+
+									$("#profilenoInternetConnection").popup('open');
+									window.setTimeout(function() {$("#profilenoInternetConnection").popup('close')}, 3000);
+	
+						},
+			
+				url			: serviceURL + "customer_edit",
+				type		: "POST",
+				data		: {cust_id : customer_id, name : cname, address : addr, email : email, number : cnumber },
+				dataType	: "html"
 				
 			});
 		
@@ -1021,6 +986,8 @@ $('#profilePage').live("pageshow", function(event) {
 				
 				
 			});
+			
+		}
 		
 
 		
@@ -1253,18 +1220,6 @@ function del_table(id) {
 
 $('#editPage').live("pageshow", function(event){
 
-	$.ajax({
-		error		: function (req, status, error) {
-		      			if(status == "timeout") 
-		 	
-		      			$("#editnoInternetConnection").popup('open');
-	        			window.setTimeout(function() {$("#editnoInternetConnection").popup('close')}, 3000);
-						
-		   				},
-		timeout		: 	2000, //2 seconds
-		url			:	"http://www.google.com.ph/"
-		
-	});
 	
 	var domainName = window.localStorage.getItem("domain_name");
 	
@@ -1279,53 +1234,65 @@ $('#editPage').live("pageshow", function(event){
 		
 		item_info = data.item_info;
 		
-			$.each(item_info, function(index, info) {
-				
-				
-				$('.item_available').append(info.mboos_product_availability);
-				$('.item_total_qty').val(info.mboos_product_availability);
-				
-				});
+		availability = data.availability;
+		
+		$.each(availability, function(index, available) {
+		
+			$('.item_available').append(available.availability);
+			$('.item_available_hidden').val(available.availability);
+		});
 			
 		
 		});
 	
 	$('.saveBtn').click(function() {
 	    	
-	    	var tempItem_availability = parseInt($('.item_total_qty').val());
+	    	var tempItem_availability = parseInt($('.item_available_hidden').val());
 	    	var qtyVal = parseInt($('input.qtyForm').val());
 	    	
     		var regInt =  /^([\d]+[\d]+\b|[\d]+\b)$/;
     		
-    		if($('input.qtyForm').val().match(regInt)) {
-   	
-		    	if(qtyVal <= tempItem_availability) {
-		    		
-			        	var name = $('.item_name_val').val();
-			        	var price = $('.item_price_val').val();
-			        	var qty = $('.qtyForm').val();
-			        	var cart_id = $('.cart_id').val();
-			        	var item_id = $('.item_id').val();
-			        	var total_price = qty * price;
-			        	
-			        	update_table(cart_id,qty, total_price);
-		
-			        	
-			    	} else {
-			    		
-			    		$("#cartEditMsg").popup('open');
-			    		window.setTimeout(function() {$("#cartEditMsg").popup('close')}, 2000);	
-			    		return false;
-			    		
-			    	} 
-    		} else {
-	    		
+    		if(qtyVal == 0) {
     			
-    			$("#qtyChecker").popup('open');
-    			window.setTimeout(function() {$("#qtyChecker").popup('close')}, 3000);	
-    			return false;
-	    	
-	    	}
+    			
+    			$("#qtyMustNotZero").popup('open');
+	    		window.setTimeout(function() {$("#qtyMustNotZero").popup('close')}, 2000);	
+	    		return false;
+    			
+    		} else {
+    			
+    			if($('input.qtyForm').val().match(regInt)) {
+    			   	
+    		    	if(qtyVal <= tempItem_availability) {
+    		    		
+    			        	var name = $('.item_name_val').val();
+    			        	var price = $('.item_price_val').val();
+    			        	var qty = $('.qtyForm').val();
+    			        	var cart_id = $('.cart_id').val();
+    			        	var item_id = $('.item_id').val();
+    			        	var total_price = qty * price;
+    			        	
+    			        	update_table(cart_id,qty, total_price);
+    		
+    			        	
+    			    	} else {
+    			    		
+    			    		$("#cartEditMsg").popup('open');
+    			    		window.setTimeout(function() {$("#cartEditMsg").popup('close')}, 2000);	
+    			    		return false;
+    			    		
+    			    	} 
+        		} else {
+    	    		
+        			
+        			$("#qtyChecker").popup('open');
+        			window.setTimeout(function() {$("#qtyChecker").popup('close')}, 3000);	
+        			return false;
+    	    	
+    	    	}
+    			
+    		}
+    		
 		
 	    });
 	
@@ -1369,3 +1336,132 @@ function update_table(id, qty, ttl_price) {
 	
 	}, dbErrorHandler);
 }
+
+
+
+
+/*
+ * Date Format 1.2.3
+ * (c) 2007-2009 Steven Levithan <stevenlevithan.com>
+ * MIT license
+ *
+ * Includes enhancements by Scott Trenda <scott.trenda.net>
+ * and Kris Kowal <cixar.com/~kris.kowal/>
+ *
+ * Accepts a date, a mask, or a date and a mask.
+ * Returns a formatted version of the given date.
+ * The date defaults to the current date/time.
+ * The mask defaults to dateFormat.masks.default.
+ */
+
+var dateFormat = function () {
+	var	token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZ]|"[^"]*"|'[^']*'/g,
+		timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g,
+		timezoneClip = /[^-+\dA-Z]/g,
+		pad = function (val, len) {
+			val = String(val);
+			len = len || 2;
+			while (val.length < len) val = "0" + val;
+			return val;
+		};
+
+	// Regexes and supporting functions are cached through closure
+	return function (date, mask, utc) {
+		var dF = dateFormat;
+
+		// You can't provide utc if you skip other args (use the "UTC:" mask prefix)
+		if (arguments.length == 1 && Object.prototype.toString.call(date) == "[object String]" && !/\d/.test(date)) {
+			mask = date;
+			date = undefined;
+		}
+
+		// Passing date through Date applies Date.parse, if necessary
+		date = date ? new Date(date) : new Date;
+		if (isNaN(date)) throw SyntaxError("invalid date");
+
+		mask = String(dF.masks[mask] || mask || dF.masks["default"]);
+
+		// Allow setting the utc argument via the mask
+		if (mask.slice(0, 4) == "UTC:") {
+			mask = mask.slice(4);
+			utc = true;
+		}
+
+		var	_ = utc ? "getUTC" : "get",
+			d = date[_ + "Date"](),
+			D = date[_ + "Day"](),
+			m = date[_ + "Month"](),
+			y = date[_ + "FullYear"](),
+			H = date[_ + "Hours"](),
+			M = date[_ + "Minutes"](),
+			s = date[_ + "Seconds"](),
+			L = date[_ + "Milliseconds"](),
+			o = utc ? 0 : date.getTimezoneOffset(),
+			flags = {
+				d:    d,
+				dd:   pad(d),
+				ddd:  dF.i18n.dayNames[D],
+				dddd: dF.i18n.dayNames[D + 7],
+				m:    m + 1,
+				mm:   pad(m + 1),
+				mmm:  dF.i18n.monthNames[m],
+				mmmm: dF.i18n.monthNames[m + 12],
+				yy:   String(y).slice(2),
+				yyyy: y,
+				h:    H % 12 || 12,
+				hh:   pad(H % 12 || 12),
+				H:    H,
+				HH:   pad(H),
+				M:    M,
+				MM:   pad(M),
+				s:    s,
+				ss:   pad(s),
+				l:    pad(L, 3),
+				L:    pad(L > 99 ? Math.round(L / 10) : L),
+				t:    H < 12 ? "a"  : "p",
+				tt:   H < 12 ? "am" : "pm",
+				T:    H < 12 ? "A"  : "P",
+				TT:   H < 12 ? "AM" : "PM",
+				Z:    utc ? "UTC" : (String(date).match(timezone) || [""]).pop().replace(timezoneClip, ""),
+				o:    (o > 0 ? "-" : "+") + pad(Math.floor(Math.abs(o) / 60) * 100 + Math.abs(o) % 60, 4),
+				S:    ["th", "st", "nd", "rd"][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10]
+			};
+
+		return mask.replace(token, function ($0) {
+			return $0 in flags ? flags[$0] : $0.slice(1, $0.length - 1);
+		});
+	};
+}();
+
+// Some common format strings
+dateFormat.masks = {
+	"default":      "ddd mmm dd yyyy HH:MM:ss",
+	shortDate:      "m/d/yy",
+	mediumDate:     "mmm d, yyyy",
+	longDate:       "mmmm d, yyyy",
+	fullDate:       "dddd, mmmm d, yyyy",
+	shortTime:      "h:MM TT",
+	mediumTime:     "h:MM:ss TT",
+	longTime:       "h:MM:ss TT Z",
+	isoDate:        "yyyy-mm-dd",
+	isoTime:        "HH:MM:ss",
+	isoDateTime:    "yyyy-mm-dd'T'HH:MM:ss",
+	isoUtcDateTime: "UTC:yyyy-mm-dd'T'HH:MM:ss'Z'"
+};
+
+// Internationalization strings
+dateFormat.i18n = {
+	dayNames: [
+		"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat",
+		"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+	],
+	monthNames: [
+		"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+		"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
+	]
+};
+
+// For convenience...
+Date.prototype.format = function (mask, utc) {
+	return dateFormat(this, mask, utc);
+};

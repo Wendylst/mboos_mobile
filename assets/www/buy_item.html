@@ -41,7 +41,10 @@
 				<p class="availabilityMsg">The Quantity you entered exceeded the available items.<p>
 			</div>
 			<div data-role="popup" id="intChecker">
-				<p class="availabilityMsg">Invalid Input<p>
+				<p class="availabilityMsg">Quantity must not be empty OR Invalid Input<p>
+			</div>
+			<div data-role="popup" id="qtyZero">
+				<p class="availabilityMsg">Quantity must not be zero<p>
 			</div>
 					<div data-role="popup" id="buyitemnoInternetConnection">
 				<p class="loginMsg">No Internet Connection.<p>
@@ -54,6 +57,16 @@
 					<p>Item was added to Cart</p>
 					<a href="cart.html" data-role="button">Go To Cart</a>    
 					<a href="search.html" data-role="button" data-theme="b">Continue Shopping</a>  
+				</div>
+			</div>
+			
+			<div data-role="popup" id="messagePopUp" data-overlay-theme="a" data-theme="c" style="max-width:400px;" class="ui-corner-all">
+				<div data-role="header" data-theme="b" class="ui-corner-top">
+					<h1>Menu</h1>
+				</div>
+				<div data-role="content" data-theme="d" class="ui-corner-bottom ui-content">
+					<p>Sorry, Item is not Available</p> 
+					<a href="search.html" data-role="button" data-theme="b">Go Back to Search</a>  
 				</div>
 			</div>
 

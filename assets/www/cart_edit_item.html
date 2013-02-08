@@ -23,6 +23,7 @@
 				<p><label class="item_name">Name: </label></p>
 				<p><label class="item_price" >Price:</label></p>
 				<p><label class="item_available" >Available:</label></p>
+				<input type="hidden" class="item_available_hidden" val="" /> 
 			</div>
 			<div class="item_more_info">				
 				<label id="qtyForm_label" for="basic">Quantity:</label>
@@ -32,6 +33,9 @@
 			</div>
 			<div data-role="popup" id="cartEditMsg">
 				<p class="availabilityMsg">The Quantity you entered exceeded the available items.<p>
+			</div>
+			<div data-role="popup" id="qtyMustNotZero">
+				<p class="availabilityMsg">Quantity must not be zero.<p>
 			</div>
 					<div data-role="popup" id="editnoInternetConnection">
 				<p class="loginMsg">No Internet Connection.<p>

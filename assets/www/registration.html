@@ -24,8 +24,8 @@
 		<div id="regContent" data-role="content">	
 				<p class="requiredMsg">* Required</p>
 				<p><label for="fname" >Complete Name *</label><input  class="fname" name="fname" type="text" /></p>
-				<p><label for="email">Email Address* </label><input  class="email" name="email" type="text"  /></p>
-				<p><label for="email">Password* </label><input  class="password" name="password" type="password"  /></p>
+				<p><label for="email">Email Address* </label><input  id="email_addr" name="email" type="text"  /></p>
+				<p><label for="email">Password* </label><input  class="reg_password" name="password" type="password"  /></p>
 				<p><label for="address">Address* </label><input  class="address" name="address" type="text"  /></p>
 				<p><label for="cNumber">Cellphone Number*</label><input  class="cNumber" name="cNumber"  type="number" /></p>
 				<p><input class="regBtn" type="submit" value="Save" data-theme="b"/></p>
@@ -36,6 +36,9 @@
 		</div>
 		<div data-role="popup" id="regnoInternetConnection">
 				<p class="loginMsg">No Internet Connection.<p>
+		</div>
+		<div data-role="popup" id="cnameIsRequired">
+				<p class="loginMsg">Complate Name is Required.<p>
 		</div>
 		<div data-role="popup" id="emailExistMsg">
 				<p class="regMsg">Invalid Email Address<p>
@@ -54,6 +57,9 @@
 		</div>
 		<div data-role="popup" id="invalidNumber">
 				<p class="regMsg">Invalid Input<p>
+		</div>
+		<div data-role="popup" id="invalidName">
+				<p class="regMsg">Invalid Complete Name<p>
 		</div>
 		<div data-role="popup" id="regUnsuccessfulMsg">
 				<p class="regMsg">Registration unsuccessful<p>
