@@ -274,6 +274,8 @@ $('#homePage').live("pageshow", function(event){
 
 $(document).live("pageinit", function(event){
 	
+	 $.mobile.defaultPageTransition="none"
+	
 	setTimeout(function (){
 		
 		var domainChecker = window.localStorage.getItem("domain_setup");
@@ -1007,15 +1009,16 @@ $('#profilePage').live("pageshow", function(event) {
 });
 
 $('#confirmationPage').live("pageshow", function(event) {
-	
-	emptyDB();
-	
+
 	var getCurrDomain = window.localStorage.getItem("domain_name");
 	var getPaypalEmail = window.localStorage.getItem("paypal_email");
 	var serviceURL = "http://"+ getCurrDomain +"/MBOOS/mobile_ajax/customer/";
 	var datas = localStorage.getItem("all_items");
 	var subtotal = window.localStorage.getItem("subtotal");
 	var user_email = window.localStorage.getItem("user_email");
+	
+	var cleanDatas = datas.replace("&","%26");
+	
 	
 	$.getJSON(serviceURL + 'customer_info?email='+user_email, function(data) {
 		
@@ -1024,11 +1027,26 @@ $('#confirmationPage').live("pageshow", function(event) {
 		$.each(cust_info, function(index, info) {
 			
 			//'id'=>'1','name'=>'ian','item_id'=>'0001','qty'=>'5','price'=>'100.00' ||'id'=>'2','name'=>'paul','item_id'=>'0002','qty'=>'3','price'=>'10.00'&subtotal=100.00&cust_id=1&paypal=ian_kionisala@yahoo.com
-			window.plugins.childBrowser.showWebPage('http://'+ getCurrDomain +'/MBOOS/paypal/paypal?stringOrder='+ datas +'&subtotal='+ subtotal +'&cust_id='+ info.mboos_customer_id +'&paypal_email='+ getPaypalEmail +'', { showLocationBar: true });
+			window.plugins.childBrowser.showWebPage('http://'+ getCurrDomain +'/MBOOS/paypal/paypal?stringOrder='+ cleanDatas +'&subtotal='+ subtotal +'&cust_id='+ info.mboos_customer_id +'&paypal_email='+ getPaypalEmail +'', { showLocationBar: true });
 			
 		});
 
 	});
+	
+	$('a.clearCartBtn').click(function() {
+		
+		emptyDB();
+		$.mobile.changePage( "index.html", { transition: "slideup"} );
+		
+	});
+	
+	
+	$('a.backToCartBtn').click(function() {
+		
+		$.mobile.changePage( "cart.html", { transition: "slideup"} );
+		
+	});
+	
 	
 	
 		
