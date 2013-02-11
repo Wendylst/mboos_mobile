@@ -897,7 +897,7 @@ $('#profilePage').live("pageshow", function(event) {
 			$('#address').val(info.mboos_customer_addr);
 			$('#email').val(info.mboos_customer_email);
 			$('#cNumber').val(info.mboos_customer_phone);
-			$('.cust_id').val(info.mboos_customer_id);
+			$('#customer_id').val(info.mboos_customer_id);
 			
 		});
 
@@ -927,7 +927,8 @@ $('#profilePage').live("pageshow", function(event) {
 		var strongPword =  /(?!^[0-9]*$)(?!^[a-zA-Z!@#$%^&*()_+=<>?]*$)^([a-zA-Z!@#$%^&*()_+=<>?0-9]{6,15})$/;
 		var cnumber = /^(\(\d+\)\s{0,1}){0,1}(\d+((\-|\s){0,1})\d+){0,}$/;
 		
-		var customer_id = $('.cust_id').val();
+		var customer_id = $('#customer_id').val();
+		
 		var cname = $('#cName').val();
 		var addr = $('#address').val();
 		var email = $('#email').val();
@@ -960,7 +961,7 @@ $('#profilePage').live("pageshow", function(event) {
 		var request = $.ajax({
 				
 				error		: function (req, status, error) {
-							if(status == "timeout") 
+								if(status == "timeout") 
 
 									$("#profilenoInternetConnection").popup('open');
 									window.setTimeout(function() {$("#profilenoInternetConnection").popup('close')}, 3000);
@@ -970,7 +971,10 @@ $('#profilePage').live("pageshow", function(event) {
 				url			: serviceURL + "customer_edit",
 				type		: "POST",
 				data		: {cust_id : customer_id, name : cname, address : addr, email : email, number : cnumber },
-				dataType	: "html"
+				success		: 	function(data) {
+				
+							
+								}
 				
 			});
 		
