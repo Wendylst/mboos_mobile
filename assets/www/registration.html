@@ -23,11 +23,12 @@
 		
 		<div id="regContent" data-role="content">	
 				<p class="requiredMsg">* Required</p>
-				<p><label for="fname" >Complete Name *</label><input  class="fname" name="fname" type="text" /></p>
-				<p><label for="email">Email Address* </label><input  id="email_addr" name="email" type="text"  /></p>
-				<p><label for="email">Password* </label><input  class="reg_password" name="password" type="password"  /></p>
-				<p><label for="address">Address* </label><input  class="address" name="address" type="text"  /></p>
-				<p><label for="cNumber">Cellphone Number*</label><input  class="cNumber" name="cNumber"  type="number" /></p>
+				<p><label for="fname" >Complete Name *</label><input  class="fname" name="fname" type="text" placeholder="Complete Name"/></p>
+				<p><label for="email">Email Address* </label><input  id="email_addr" name="email" type="text"  placeholder="Email Address"/></p>
+				<p><label for="email">Password* </label><input  class="reg_password" name="password" type="password"  placeholder="Password"/></p>
+				<p><label for="email">Confirm Password* </label><input  class="con_reg_password" name="confirm_password" type="password"  placeholder="Confirm Password"/></p>
+				<p><label for="address">Address* </label><input  class="address" name="address" type="text"  placeholder="Address"/></p>
+				<p><label for="cNumber">Cellphone Number*</label><input  class="cNumber" name="cNumber"  type="number" placeholder="Cellphone Number"/></p>
 				<p><input class="regBtn" type="submit" value="Save" data-theme="b"/></p>
 			
 		</div>
@@ -52,6 +53,22 @@
 		<div data-role="popup" id="emailChecker1">
 				<p class="regMsg">Email address is available<p>
 		</div>
+		<div data-role="popup" id="pwordIsRequired">
+				<p class="loginMsg">Password is Required.<p>
+		</div>
+		<div data-role="popup" id="pwordIsConfirm">
+				<p class="loginMsg">Please Confirm your Password<p>
+		</div>
+		<div data-role="popup" id="addrIsRequired">
+				<p class="loginMsg">Address is Required.<p>
+		</div>
+		<div data-role="popup" id="phoneIsRequired">
+				<p class="loginMsg">Phone Number is Required.<p>
+		</div>
+		<div data-role="popup" id="confirmPasswordMsg">
+				<p class="loginMsg">The password which you have entered do not match<p>
+		</div>
+		
 		<div data-role="popup" id="passwordTipsMsg">
 				<p class="regMsg">Password must contains a number and an alphabet and should be more than 6 characters long <p>
 		</div>
@@ -59,7 +76,7 @@
 				<p class="regMsg">Invalid Input<p>
 		</div>
 		<div data-role="popup" id="invalidName">
-				<p class="regMsg">Invalid Complete Name<p>
+				<p class="regMsg">Invalid Complete Name. It must only contain Alphabet<p>
 		</div>
 		<div data-role="popup" id="regUnsuccessfulMsg">
 				<p class="regMsg">Registration unsuccessful<p>
