@@ -200,6 +200,8 @@ $('#loginPage').live("pageshow", function(event){
 			$('.log_password').removeClass("error");
 			
 			$.ajax({
+		        beforeSend	: function() { $.mobile.showPageLoadingMsg(); }, 
+		        complete	: function() { $.mobile.hidePageLoadingMsg(); }, 
 				error		: function (req, status, error) {
 				      			if(status == "timeout") 
 				 	
@@ -253,7 +255,7 @@ $('#homePage').live("pageshow", function(event){
 
 	if(is_logged_id == 1) {
 		
-		
+		setupDB();
 	
 	} else {
 		
@@ -716,12 +718,22 @@ function get_cat_info() {
 	cat_item = data.cat_item_list;
 	
 		$.each(cat_item, function(index, info) {
+			
+			if(info.mboos_product_name == "empty") { 
+				
+				$('#category_data').append("<h3 class='noResultMsg'> No Items</h3>");
+				
+			} else {
 			$('#category_data').append('<li><a class="id_item" href="buy_item.html?id=' + info.mboos_product_id + '">' +
 					'<h4>' + info.mboos_product_name +'</h4>' + '<p>' + info.mboos_product_price + '</p>' +
 					"</a><a class='id_link' href='buy_item.html?id=" + info.mboos_product_id + "'  data-transition='slideup'>Add to Cart</a></li>");
-					    			
+			}			
 		});
+	
 		
+		
+		
+	
 		$('#category_data').listview('refresh');
 	})
 	
@@ -968,7 +980,6 @@ $('#checkoutPage').live("pageshow", function(event) {
 
 $('#profilePage').live("pageshow", function(event) {
 	
-	
 	var currUser = window.localStorage.getItem("user_email");
 	var domainName = window.localStorage.getItem("domain_name");
 	
@@ -976,7 +987,9 @@ $('#profilePage').live("pageshow", function(event) {
 	
 	var serviceURL = "http://"+ domainName +"/MBOOS/mobile_ajax/customer/";
 	
-	$.getJSON(serviceURL + 'customer_info?email='+currUser, function(data) {
+	$.mobile.showPageLoadingMsg();
+
+	var jqxhr = $.getJSON(serviceURL + 'customer_info?email='+currUser, function(data) {
 	
 		cust_info = data.customer_info;
 	
@@ -991,7 +1004,8 @@ $('#profilePage').live("pageshow", function(event) {
 			
 		});
 
-	});
+	})
+	.complete(function() { $.mobile.hidePageLoadingMsg(); })
 	
 	$.getJSON(serviceURL + 'customer_order_summary?currEmail='+currUser, function(data) {
 		
@@ -1024,18 +1038,17 @@ $('#profilePage').live("pageshow", function(event) {
 		var email = $('#email').val();
 		var cnumber = $('#cNumber').val();
 		
-		if(!email.match(emailExp)) {
-			
-			$("#cnameEmptyMsg").popup('open');
-			window.setTimeout(function() {$("#cnameEmptyMsg").popup('close')}, 3000);
-		
-			
-			
-		} else if(email.lenght == 0) {
-			
+		if(email.length == 0) {
 			
 			$("#emailIsEmpty").popup('open');
 			window.setTimeout(function() {$("#emailIsEmpty").popup('close')}, 3000);
+			
+			
+		} else if(!email.match(emailExp)) {
+			
+			
+			$("#cnameEmptyMsg").popup('open');
+			window.setTimeout(function() {$("#cnameEmptyMsg").popup('close')}, 3000);
 			
 			
 		} else if(!cnumber.match(cnumber)) {
@@ -1089,6 +1102,14 @@ $('#profilePage').live("pageshow", function(event) {
 		
 	});
 	
+	$('.changePasswordBtn').click(function() {
+		
+		$.mobile.changePage( "changePassword.html?id="+ $('#customer_id').val() + "" , { transition: "slideup"} );
+		
+		
+	});
+	
+	
 	$('.updatingDomainBtn').click(function() { 
 		
 		var getCurrDomain = window.localStorage.getItem("domain_name");
@@ -1101,6 +1122,253 @@ $('#profilePage').live("pageshow", function(event) {
 		window.setTimeout(function() {$("#updatingDomainMsg").popup('close')}, 2000);
 	});
 });
+
+$('#changePasswordPage').live("pageshow", function(event) { 
+	
+	var domainName = window.localStorage.getItem("domain_name");
+	var serviceURL = "http://"+ domainName +"/MBOOS/mobile_ajax/customer/";
+	var strongPword =  /(?!^[0-9]*$)(?!^[a-zA-Z!@#$%^&*()_+=<>?]*$)^([a-zA-Z!@#$%^&*()_+=<>?0-9]{6,15})$/;
+	
+	var id = getUrlVars()["id"];
+	
+	$('.changePassMsg').hide();
+	
+	$('.curr_pword').change(function() {
+		
+		$('.changePassMsg').hide();
+		var currPass = $('.curr_pword').val();
+		
+		var request = $.ajax({
+			
+			error		: function (req, status, error) {
+							if(status == "timeout") 
+	
+								$("#forgotPasswordnoInternetConnection").popup('open');
+								window.setTimeout(function() {$("#forgotPasswordnoInternetConnection").popup('close')}, 3000);
+	
+					},
+		
+			url			: serviceURL + "editPassword",
+			type		: "POST",
+			data		: {cust_id : id, pw : currPass },
+			success		: 	function(data) {
+			
+								//alert(data);
+								var response = data.toString();
+								
+								if(response == "1") {
+									
+									$('.changePassMsg').hide();
+									$('.curr_pword').removeClass("error");
+									$('.changePassSaveBtn').removeAttr('disabled');
+									$('.curr_pword').addClass("correct");
+									
+								} else {
+									
+									$('.changePassMsg').show();
+									$('.curr_pword').addClass("error").focus();
+									
+									$('.changePassSaveBtn').attr('disabled','disabled');
+								}
+								
+							}
+			
+		});
+	
+		request.done(function(msg) {
+			
+
+		});
+		
+		request.fail(function(jqXHR, textStatus) {
+			
+			$('.changePassMsg').show();
+			
+		});
+		
+	});
+	
+	$('.new_pword').change(function() {
+
+		var newPass = $('.new_pword').val();
+		
+		if(!newPass.match(strongPword)) {
+			
+			$('.changePassMsg').empty().append("Weak Password");
+			$('.changePassMsg').show();
+			$('.new_pword').addClass("error").focus();
+			$('.changePassSaveBtn').removeAttr('disabled');
+		
+		} else {
+			
+			$('.changePassMsg').hide();
+			$('.new_pword').removeClass("error");
+			$('.new_pword').addClass("correct");
+			
+		}
+	});
+
+	$('.changePassSaveBtn').click(function() {
+			
+			var cust_id = id;
+			var currPass = $('.curr_pword').val();
+			var newPass = $('.new_pword').val().toString();
+			var cPass = $('.con_pword').val().toString();
+			
+			var strongPword =  /(?!^[0-9]*$)(?!^[a-zA-Z!@#$%^&*()_+=<>?]*$)^([a-zA-Z!@#$%^&*()_+=<>?0-9]{6,15})$/;
+			
+			//alert( cust_id + " " + currPass +  " " + newPass + " " + cPass );
+			
+			if(currPass.length == 0) {
+				
+				$('.changePassMsg').empty().append("Current Password is required");
+				$('.changePassMsg').show();
+				$('.curr_pword').addClass("error").focus();
+				$('.changePassSaveBtn').removeAttr('disabled');
+				
+			} else if(newPass.length == 0) {
+				
+				$('.changePassMsg').empty().append("New Password is required");
+				$('.changePassMsg').show();
+				$('.new_pword').addClass("error").focus();
+				$('.changePassSaveBtn').removeAttr('disabled');
+			
+			} else if(!newPass.match(strongPword)) {
+				
+				$('.changePassMsg').empty().append("Weak Password");
+				$('.changePassMsg').show();
+				$('.new_pword').addClass("error").focus();
+				$('.changePassSaveBtn').removeAttr('disabled');
+			
+			} else {
+				
+					if(newPass == cPass ) {
+				
+						$('.changePassMsg').hide();
+						$('.con_pword').removeClass("error");
+						$('.changePassSaveBtn').removeAttr('disabled');
+						$('.con_pword').addClass("correct");
+						
+						var request = $.ajax({
+							
+							error		: function (req, status, error) {
+											if(status == "timeout") 
+					
+												$("#forgotPasswordnoInternetConnection").popup('open');
+												window.setTimeout(function() {$("#forgotPasswordnoInternetConnection").popup('close')}, 3000);
+					
+									},
+						
+							url			: serviceURL + "savePassword",
+							type		: "POST",
+							data		: {cust_id : cust_id, pw : newPass },
+							success		: 	function(data) {
+							
+											
+												var response = data.toString();
+												
+												if(response == "1") {
+													
+													$('.changePassMsg').empty().append("You changed Successfully");
+													$('.changePassMsg').show();
+													$('.curr_pword').val("");
+													$('.new_pword').val("");
+													$('.con_pword').val("");
+													
+													
+													
+												} else {
+													
+													
+													
+													$('.changePassMsg').empty().append("Changed UnSuccessful");
+													$('.changePassMsg').show();
+													
+		
+												}
+												
+											}
+							
+						});
+						
+					} else {
+						
+						$('.changePassMsg').empty().append("Password not match");
+						$('.changePassMsg').show();
+						$('.con_pword').addClass("error").focus();
+						
+						$('.changePassSaveBtn').attr('disabled','disabled');
+						
+					}
+
+			}
+		});
+	
+
+	
+});
+
+
+$('#confirmationPage').live("pageshow", function(event) { 
+	
+	$('.changePassMsg').hide();
+	$('#currPass').change(function() {
+		
+		var cust_id = $('#customer_id').val();
+		var currPass = $('#curr_pword').val();
+		
+		var request = $.ajax({
+			
+			error		: function (req, status, error) {
+							if(status == "timeout") 
+	
+								$("#profilenoInternetConnection").popup('open');
+								window.setTimeout(function() {$("#profilenoInternetConnection").popup('close')}, 3000);
+	
+					},
+		
+			url			: serviceURL + "editPassword",
+			type		: "POST",
+			data		: {cust_id : cust_id, pw : currPass },
+			success		: 	function(data) {
+			
+							
+								var response = data.toString();
+								
+								if(response == "1") {
+									
+									$('.changePassMsg').hide();
+									$('#currPass').removeClass("error");
+									$('.changePassSaveBtn').removeAttr('disabled');
+									$('#currPass').addClass("correct");
+									
+								} else {
+									
+									$('.changePassMsg').show();
+									$('#currPass').addClass("error").focus();
+									
+									$('.changePassSaveBtn').attr('disabled','disabled');
+								}
+								
+							}
+			
+		});
+	
+		request.done(function(msg) {
+			
+
+		});
+		
+		request.fail(function(jqXHR, textStatus) {
+			
+			$('.PassErrorMsg').show();
+			
+		});
+		
+	});
+	
+});
+
 
 $('#confirmationPage').live("pageshow", function(event) {
 

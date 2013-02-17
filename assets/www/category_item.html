@@ -13,18 +13,23 @@
    	
 </head> 
 <body>
-<div id="categoryPage" data-role="page" data-add-back-btn="true">
+<div id="categoryPage" data-role="page" >
 		<div data-role="header" data-position="fixed" data-theme="b" >
+			<div class="ui-btn-left" data-role="controlgroup" data-type="horizontal">
+            	<a class="searchhBtn" href="categories.html" data-role="button" >Back</a>
+        	</div>
 			<h1>Category</h1>
 			<div class="ui-btn-right" data-role="controlgroup" data-type="horizontal">
             	<a class="refreshBtn" href="#" data-role="button" data-icon="refresh" >Refresh</a>
        		</div>
 		</div><!-- /header -->
 		
-	<div data-role="content" id="my_wrapper">
-		<ul id="category_data" data-role="listview" data-split-icon="plus" data-filter="true" data-filter-placeholder="Search Item...">
+	<div data-role="content">
+		<div id="my-wrapper">
+			<ul id="category_data" data-role="listview" data-split-icon="plus" data-filter="true" data-filter-placeholder="Search Item...">
 		
-		</ul>
+			</ul>
+		</div>
 	</div>
 		<div data-role="popup" id="byCatnoInternetConnection">
 				<p class="loginMsg">No Internet Connection.<p>

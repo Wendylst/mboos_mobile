@@ -11,7 +11,8 @@ p { padding:0; margin:0; }
 .item_desc { padding:1em 0 0 0; }
 #qty_header {  height:5em; }
 
-#my_wrapper .ui-listview-filter {left: 15px; position: fixed; top:55px; width: 100%; z-index: 1000;}
+#my-wrapper form {left: 15px; position: fixed; top:55px; width: 100%; z-index: 1000; } 
+
 #search_data, #category_data { margin-top:25px; }
 
 div#subTotalBox { left:0;background-color:#f5f5b4; height:60px;  position: fixed; top:43px; width: 100%; z-index: 1000; }
@@ -20,11 +21,17 @@ div#subTotalBox p { margin: 5px 0 5px 0; }
 .subTotal_label { float:left; }
 .item_qty_label { float: right; width:78px; }
 
+
+#changePasswordPage input.error { border-color:red; }
+#profilePage input.error { border-color:red; }
 #regPage input.error { border-color:red; }
 #domainPage input.error { border-color:red; }
 #loginPage input.error { border-color:red; }
 .requiredMsg { color: red; }
+.changePassMsg { color:red; }
 
+#changePasswordPage input.correct { border-color:#b9f4b0; }
+#profilePage input.correct { border-color:#b9f4b0; }
 
 #dialog_info input.error { border-color:red; }
 #paypalBox input.error { border-color:red; }
@@ -45,6 +52,7 @@ div#subTotalBox p { margin: 5px 0 5px 0; }
 div.no_internet_msg { display:none; background-color:#f5f5b4; height:20px; text-align:center; padding:0.5em;}
 .orderDetail_header_right { float:right; margin-right:1em; }
 
+.noResultMsg { padding: 1em 0 0 1em; }
 
 
 
