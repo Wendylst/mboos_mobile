@@ -1309,65 +1309,7 @@ $('#changePasswordPage').live("pageshow", function(event) {
 });
 
 
-$('#confirmationPage').live("pageshow", function(event) { 
-	
-	$('.changePassMsg').hide();
-	$('#currPass').change(function() {
-		
-		var cust_id = $('#customer_id').val();
-		var currPass = $('#curr_pword').val();
-		
-		var request = $.ajax({
-			
-			error		: function (req, status, error) {
-							if(status == "timeout") 
-	
-								$("#profilenoInternetConnection").popup('open');
-								window.setTimeout(function() {$("#profilenoInternetConnection").popup('close')}, 3000);
-	
-					},
-		
-			url			: serviceURL + "editPassword",
-			type		: "POST",
-			data		: {cust_id : cust_id, pw : currPass },
-			success		: 	function(data) {
-			
-							
-								var response = data.toString();
-								
-								if(response == "1") {
-									
-									$('.changePassMsg').hide();
-									$('#currPass').removeClass("error");
-									$('.changePassSaveBtn').removeAttr('disabled');
-									$('#currPass').addClass("correct");
-									
-								} else {
-									
-									$('.changePassMsg').show();
-									$('#currPass').addClass("error").focus();
-									
-									$('.changePassSaveBtn').attr('disabled','disabled');
-								}
-								
-							}
-			
-		});
-	
-		request.done(function(msg) {
-			
 
-		});
-		
-		request.fail(function(jqXHR, textStatus) {
-			
-			$('.PassErrorMsg').show();
-			
-		});
-		
-	});
-	
-});
 
 
 $('#confirmationPage').live("pageshow", function(event) {
@@ -1388,7 +1330,7 @@ $('#confirmationPage').live("pageshow", function(event) {
 	
 		$.each(cust_info, function(index, info) {
 			
-			//'id'=>'1','name'=>'ian','item_id'=>'0001','qty'=>'5','price'=>'100.00' ||'id'=>'2','name'=>'paul','item_id'=>'0002','qty'=>'3','price'=>'10.00'&subtotal=100.00&cust_id=1&paypal=ian_kionisala@yahoo.com
+			//'item_id'=>'1','name'=>'ian','item_id'=>'0001','qty'=>'5','price'=>'100.00' ||'id'=>'2','name'=>'paul','item_id'=>'0002','qty'=>'3','price'=>'10.00'&subtotal=100.00&cust_id=1&paypal=ian_kionisala@yahoo.com
 			window.plugins.childBrowser.showWebPage('http://'+ getCurrDomain +'/MBOOS/paypal/paypal?stringOrder='+ cleanDatas +'&subtotal='+ subtotal +'&cust_id='+ info.mboos_customer_id +'&paypal_email='+ getPaypalEmail +'', { showLocationBar: true });
 			
 		});
@@ -1401,17 +1343,6 @@ $('#confirmationPage').live("pageshow", function(event) {
 		$.mobile.changePage( "index.html", { transition: "slideup"} );
 		
 	});
-	
-	
-	$('a.backToCartBtn').click(function() {
-		
-		$.mobile.changePage( "cart.html", { transition: "slideup"} );
-		
-	});
-	
-	
-	
-		
 		
 });
 
@@ -1432,7 +1363,7 @@ var item_lists = [];
 
 	for (var i=0; i<len; i++){
 		
-		order = ["||'item_id' => '" + results.rows.item(i).item_id + "'", "'name' => '"+ results.rows.item(i).item_name  +"'", "'price' => '"+ results.rows.item(i).item_price +"'", "'qty' => '" + results.rows.item(i).item_qty + "'"]
+		order = ["||'item_id'=>'" + results.rows.item(i).item_id + "'", "'name'=>'"+ results.rows.item(i).item_name  +"'", "'price'=>'"+ results.rows.item(i).item_price +"'", "'qty'=>'" + results.rows.item(i).item_qty + "'"]
 		
 		item_lists.push(order);			
 	
@@ -1489,12 +1420,11 @@ function querySuccess(tx, results) {
 							'<h4>' + results.rows.item(i).item_name  +'</h4>' + 
 							'<p>PHP ' + results.rows.item(i).item_price + '</p>' +
 							'<a class="deleteBtn" href="item_delete.html?id=' + results.rows.item(i).id + '" data-role="button" data-icon="delete" data-iconpos="notext">Delete</a> ' +
-							'</a><span class="ui-li-count">'+ results.rows.item(i).item_qty +'</span></li>'); 
-			
-			$("#cart_data").listview("refresh");
+							'</a><span class="ui-li-count">'+ results.rows.item(i).item_qty +'</span></li>'); 	
 			
 	    }
-
+	
+	$("#cart_data").listview("refresh");
     
 }
 
